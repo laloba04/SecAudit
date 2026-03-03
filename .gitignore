@@ -5,3 +5,19 @@ dist/
 build/
 .DS_Store
 *.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# Go
+*.exe
+*.db
+secaudit.db
+
+# IDE
+.vscode/
+.idea/

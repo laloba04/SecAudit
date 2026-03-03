@@ -154,10 +154,10 @@ SecAudit realiza **únicamente análisis pasivo**:
 
 ## 🗺️ Roadmap
 
-- [ ] **Fase 1** — Scanner Python en terminal (headers + SSL)
-- [ ] **Fase 2** — API Go + Gin + base de datos SQLite
-- [ ] **Fase 3** — Reportes PDF + módulos config_checker y deps_auditor
-- [ ] **Fase 4** — Dashboard React + comparativa de auditorías
+- [x] **Fase 1** — Scanner Python en terminal (headers + SSL)
+- [x] **Fase 2** — API Go + Gin + base de datos SQLite
+- [x] **Fase 3** — Reportes PDF + módulos config_checker y deps_auditor
+- [x] **Fase 4** — Dashboard React + comparativa de auditorías
 - [ ] **Fase 5** — Tests, CI/CD, despliegue público y portafolio
 
 ---

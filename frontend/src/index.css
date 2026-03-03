@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background-color: #0d1117;
+  color: white;
+  transition: filter 0.3s ease;
+}
+
+body.theme-light {
+  filter: invert(1) hue-rotate(180deg);
+  background-color: #0d1117;
+}
+
+/* Fix images and some specific icons from being double inverted */
+body.theme-light img,
+body.theme-light svg[data-no-invert="true"],
+body.theme-light .no-invert {
+  filter: invert(1) hue-rotate(180deg);
+}

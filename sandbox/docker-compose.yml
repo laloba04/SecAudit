@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # OWASP Juice Shop — vulnerable web app para prácticas
+  juice-shop:
+    image: bkimminich/juice-shop:latest
+    container_name: secaudit-juiceshop
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+
+  # DVWA — Damn Vulnerable Web Application
+  dvwa:
+    image: vulnerables/web-dvwa:latest
+    container_name: secaudit-dvwa
+    ports:
+      - "8081:80"
+    restart: unless-stopped
+    environment:
+      - MYSQL_PASS=password
+
+  # Uptime Kuma — Monitorización de tiempo de actividad SSL / HTTP
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: secaudit-uptime
+    volumes:
+      - uptime-kuma-data:/app/data
+    ports:
+      - "3001:3001"
+    restart: unless-stopped
+
+  # Dozzle — Visor de logs en tiempo real para contenedores Docker
+  dozzle:
+    image: amir20/dozzle:latest
+    container_name: secaudit-dozzle
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8888:8080"
+    restart: unless-stopped
+
+volumes:
+  uptime-kuma-data:
