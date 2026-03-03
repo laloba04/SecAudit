@@ -38,7 +38,7 @@ export default function Settings() {
             <div className="bg-[#161b27] border border-white/5 rounded-xl overflow-hidden">
                 <div className="bg-white/[0.02] border-b border-white/5 px-6 py-4 flex items-center gap-2">
                     <Globe size={18} className="text-gray-400" />
-                    <h3 className="font-medium text-gray-200">General</h3>
+                    <h3 className="font-medium text-gray-200">{t("general")}</h3>
                 </div>
                 <div className="p-6 space-y-5">
                     <div>

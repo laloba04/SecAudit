@@ -112,6 +112,66 @@ export const translations = {
     dbSize: "Database Size",
     purgeHistory: "Purge all histories",
     saveChanges: "Save Changes",
+
+    // Infrastructure
+    infrastructureDesc: "Manage SecAudit nodes and Docker Sandbox environments.",
+    port: "Port",
+    open: "Open",
+    startNode: "Start",
+    stopNode: "Stop",
+
+    // SSL Monitor
+    sslMonitorDesc: "Monitor TLS certificate expiry and strength.",
+    domain: "Domain",
+    certificateAuthority: "Certificate Authority",
+    expiration: "Expiration",
+    validSsl: "Valid",
+    warningSsl: "Review",
+    expiredSsl: "Expired",
+
+    // Vulnerabilities
+    catHeaders: "HTTP Headers",
+    catCrypto: "Cryptography / SSL",
+    catConfig: "Config Detection",
+    catCves: "CVEs / Dependencies",
+    vulnSummaryDesc: "A global summary of the types of vulnerabilities found across all your scans.",
+    signatureCatalog: "Signature Catalog",
+    signatureCatalogDesc: "This catalog will show all vulnerabilities (CVEs and insecure configurations) that the Python engine can detect.",
+
+    // Reports
+    reportsDesc: "Download detailed analyses in PDF or HTML.",
+    filter: "Filter",
+    downloadReport: "Download Report (HTML)",
+    reportGenerator: "Report Generator",
+    reportGeneratorDesc: "Export active audits to an interactive HTML document (simulating Py/WeasyPrint).",
+    generating: "Generating...",
+    createReport: "Create Report",
+    reportPlaceholder: "e.g. my-company.com",
+
+    // Profile
+    personalInfo: "Personal Information",
+    changeAvatar: "Change Avatar",
+    avatarFormats: "JPG, GIF or PNG. Max 1MB.",
+    accountSecurity: "Account Security",
+    currentPassword: "Current Password",
+    newPassword: "New Password",
+    minCharsHint: "Minimum 8 characters",
+    savedOk: "Saved!",
+    mustEnterCurrentPassword: "You must enter your current password to change it.",
+    incorrectCurrentPassword: "Current password is incorrect.",
+    newPasswordMinLength: "New password must be at least 8 characters.",
+
+    // Preferences
+    appearance: "Appearance",
+    interfaceTheme: "Interface Theme",
+    dark: "Dark",
+    light: "Light",
+    system: "System",
+    notificationsAndAlerts: "Notifications & Alerts",
+    uiNotifications: "UI Notifications",
+    uiNotificationsDesc: "Show the notification bell on the dashboard.",
+    emailAlerts: "Email Alerts",
+    emailAlertsDesc: "Receive periodic email reports when scans complete.",
   },
   es: {
     // Header & Navegación
@@ -228,6 +288,66 @@ export const translations = {
     dbSize: "Tamaño de la BD",
     purgeHistory: "Purgar todos los historiales",
     saveChanges: "Guardar Cambios",
+
+    // Infrastructure
+    infrastructureDesc: "Gestiona los nodos de SecAudit y los entornos Sandbox de Docker.",
+    port: "Puerto",
+    open: "Abrir",
+    startNode: "Arrancar",
+    stopNode: "Detener",
+
+    // SSL Monitor
+    sslMonitorDesc: "Vigila la caducidad y fortaleza de los certificados TLS.",
+    domain: "Dominio",
+    certificateAuthority: "Autoridad Certificadora",
+    expiration: "Expiración",
+    validSsl: "Válido",
+    warningSsl: "Revisar",
+    expiredSsl: "Caducado",
+
+    // Vulnerabilities
+    catHeaders: "Cabeceras HTTP",
+    catCrypto: "Criptografía / SSL",
+    catConfig: "Detección de Configs",
+    catCves: "CVEs / Dependencias",
+    vulnSummaryDesc: "Un resumen global de los tipos de vulnerabilidades encontradas en todos tus escaneos.",
+    signatureCatalog: "Catálogo de Firmas",
+    signatureCatalogDesc: "Aquí se mostrará el catálogo de todas las vulnerabilidades (CVEs y configuraciones inseguras) que el motor de Python es capaz de detectar.",
+
+    // Reports
+    reportsDesc: "Descarga los análisis detallados en PDF o HTML.",
+    filter: "Filtrar",
+    downloadReport: "Descargar Reporte (HTML)",
+    reportGenerator: "Generador de Reportes",
+    reportGeneratorDesc: "Exporta las auditorías activas a un documento interactivo HTML (simulando Py/WeasyPrint).",
+    generating: "Generando...",
+    createReport: "Crear Reporte",
+    reportPlaceholder: "ej. mi-empresa.com",
+
+    // Profile
+    personalInfo: "Información Personal",
+    changeAvatar: "Cambiar Avatar",
+    avatarFormats: "JPG, GIF o PNG. Max 1MB.",
+    accountSecurity: "Seguridad de la Cuenta",
+    currentPassword: "Contraseña Actual",
+    newPassword: "Nueva Contraseña",
+    minCharsHint: "Mínimo 8 caracteres",
+    savedOk: "¡Guardado!",
+    mustEnterCurrentPassword: "Debes ingresar tu contraseña actual para cambiarla.",
+    incorrectCurrentPassword: "Contraseña actual incorrecta.",
+    newPasswordMinLength: "La nueva contraseña debe tener al menos 8 caracteres.",
+
+    // Preferences
+    appearance: "Apariencia",
+    interfaceTheme: "Tema de la Interfaz",
+    dark: "Oscuro",
+    light: "Claro",
+    system: "Sistema",
+    notificationsAndAlerts: "Notificaciones y Alertas",
+    uiNotifications: "Notificaciones Interfaz",
+    uiNotificationsDesc: "Mostrar la campanita de notificaciones en el dashboard.",
+    emailAlerts: "Alertas por Correo",
+    emailAlertsDesc: "Recibir reportes periódicos al email cuando finalicen los escaneos.",
   },
   eu: {
     // Goiburua eta Nabigazioa
@@ -343,5 +463,65 @@ export const translations = {
     dbSize: "DB Tamaina",
     purgeHistory: "Garbitu historial guztiak",
     saveChanges: "Gorde Aldaketak",
+
+    // Infrastructure
+    infrastructureDesc: "Kudeatu SecAudit nodoak eta Docker Sandbox inguruneak.",
+    port: "Portua",
+    open: "Ireki",
+    startNode: "Abiarazi",
+    stopNode: "Gelditu",
+
+    // SSL Monitor
+    sslMonitorDesc: "Kontrolatu TLS ziurtagirien iraungitzea eta indarra.",
+    domain: "Domeinua",
+    certificateAuthority: "Ziurtagiri Agintaritza",
+    expiration: "Iraungitzea",
+    validSsl: "Baliozkoa",
+    warningSsl: "Berrikusi",
+    expiredSsl: "Iraungita",
+
+    // Vulnerabilities
+    catHeaders: "HTTP Goiburuak",
+    catCrypto: "Kriptografia / SSL",
+    catConfig: "Config Detezioa",
+    catCves: "CVEak / Mendekotasunak",
+    vulnSummaryDesc: "Zure eskaneatze guztietan aurkitutako ahultasun moten laburpen globala.",
+    signatureCatalog: "Sinaduran Katalogoa",
+    signatureCatalogDesc: "Hemen agertuko da Python motorrak detektatu ditzakeen ahultasun guztien katalogoa (CVEak eta konfigurazio ez-seguruak).",
+
+    // Reports
+    reportsDesc: "Deskargatu analisi xehatuak PDF edo HTML formatuan.",
+    filter: "Iragazkia",
+    downloadReport: "Deskargatu Txostena (HTML)",
+    reportGenerator: "Txosten Sortzailea",
+    reportGeneratorDesc: "Esportatu auditoriak HTML dokumentu interaktibo batera (Py/WeasyPrint simulatuz).",
+    generating: "Sortzen...",
+    createReport: "Txostena Sortu",
+    reportPlaceholder: "adib. nire-enpresa.com",
+
+    // Profile
+    personalInfo: "Informazio Pertsonala",
+    changeAvatar: "Aldatu Avatarra",
+    avatarFormats: "JPG, GIF edo PNG. Max 1MB.",
+    accountSecurity: "Kontuaren Segurtasuna",
+    currentPassword: "Egungo Pasahitza",
+    newPassword: "Pasahitz Berria",
+    minCharsHint: "Gutxienez 8 karaktere",
+    savedOk: "Gordeta!",
+    mustEnterCurrentPassword: "Aldatzeko egungo pasahitza sartu behar duzu.",
+    incorrectCurrentPassword: "Egungo pasahitza okerra da.",
+    newPasswordMinLength: "Pasahitz berriak gutxienez 8 karaktere izan behar ditu.",
+
+    // Preferences
+    appearance: "Itxura",
+    interfaceTheme: "Interfazearen Gaia",
+    dark: "Iluna",
+    light: "Argia",
+    system: "Sistema",
+    notificationsAndAlerts: "Jakinarazpenak eta Alertak",
+    uiNotifications: "UI Jakinarazpenak",
+    uiNotificationsDesc: "Erakutsi jakinarazpen-txirrina panelean.",
+    emailAlerts: "Email Alertak",
+    emailAlertsDesc: "Jaso aldizkako email txostenak eskaneatuak amaitutakoan.",
   },
 };

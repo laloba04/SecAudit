@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Shield, Mail, ArrowLeft } from "lucide-react";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function ForgotPassword() {
+    const { t } = useLanguage();
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [loading, setLoading] = useState(false);
@@ -35,27 +37,25 @@ export default function ForgotPassword() {
                     </div>
                 </div>
 
-                <h2 className="text-2xl font-bold text-center mb-2">Recuperar Contraseña</h2>
-                <p className="text-sm text-gray-400 text-center mb-8">
-                    Ingresa tu correo y te enviaremos un enlace para restablecer tu contraseña.
-                </p>
+                <h2 className="text-2xl font-bold text-center mb-2">{t("recoverPassword")}</h2>
+                <p className="text-sm text-gray-400 text-center mb-8">{t("recoverDesc")}</p>
 
                 {success ? (
                     <div className="text-center">
                         <div className="bg-green-500/10 border border-green-500/20 text-green-400 text-sm px-4 py-4 rounded-lg mb-6">
-                            ¡Enlace de recuperación enviado a <b>{email}</b>! Revisa tu bandeja de entrada o spam.
+                            {t("linkSent")} <b>{email}</b>{t("checkInbox")}
                         </div>
                         <button
                             onClick={() => navigate("/login")}
                             className="w-full bg-cyan-500 hover:bg-cyan-400 text-black font-semibold py-2.5 rounded-lg text-sm transition-colors mt-2"
                         >
-                            Volver al Login
+                            {t("backToLogin")}
                         </button>
                     </div>
                 ) : (
                     <form onSubmit={handleReset} className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-300 mb-1.5">Email Registrado</label>
+                            <label className="block text-sm font-medium text-gray-300 mb-1.5">{t("registeredEmail")}</label>
                             <div className="relative">
                                 <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
                                 <input
@@ -74,7 +74,7 @@ export default function ForgotPassword() {
                             disabled={loading}
                             className="w-full bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-black font-semibold py-2.5 rounded-lg text-sm transition-colors mt-6"
                         >
-                            {loading ? "Enviando..." : "Enviar Enlace"}
+                            {loading ? t("sending") : t("sendLink")}
                         </button>
                     </form>
                 )}

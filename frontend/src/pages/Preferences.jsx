@@ -28,16 +28,16 @@ export default function Preferences() {
 
     return (
         <div className="max-w-4xl mx-auto space-y-6">
-            <h2 className="text-2xl font-semibold mb-6">{t("preferences") ?? "Preferencias"}</h2>
+            <h2 className="text-2xl font-semibold mb-6">{t("preferences")}</h2>
 
             <div className="bg-[#161b27] border border-white/5 rounded-xl overflow-hidden">
                 <div className="bg-white/[0.02] border-b border-white/5 px-6 py-4 flex items-center gap-2">
                     <Monitor size={18} className="text-cyan-400" />
-                    <h3 className="font-medium text-gray-200">Apariencia</h3>
+                    <h3 className="font-medium text-gray-200">{t("appearance")}</h3>
                 </div>
                 <div className="p-6 space-y-5">
                     <div>
-                        <label className="block text-sm font-medium text-gray-400 mb-3">Tema de la Interfaz</label>
+                        <label className="block text-sm font-medium text-gray-400 mb-3">{t("interfaceTheme")}</label>
                         <div className="flex gap-4">
                             <button
                                 onClick={() => setTheme("dark")}
@@ -47,7 +47,7 @@ export default function Preferences() {
                                     <div className="h-2 w-full bg-cyan-500/20 rounded-sm"></div>
                                     <div className="h-full w-full bg-white/5 rounded-sm"></div>
                                 </div>
-                                <span className="text-sm font-medium">Oscuro</span>
+                                <span className="text-sm font-medium">{t("dark")}</span>
                             </button>
                             <button
                                 onClick={() => setTheme("light")}
@@ -57,7 +57,7 @@ export default function Preferences() {
                                     <div className="h-2 w-full bg-cyan-500/20 rounded-sm"></div>
                                     <div className="h-full w-full bg-gray-100 rounded-sm"></div>
                                 </div>
-                                <span className="text-sm font-medium">Claro</span>
+                                <span className="text-sm font-medium">{t("light")}</span>
                             </button>
                             <button
                                 onClick={() => setTheme("system")}
@@ -67,7 +67,7 @@ export default function Preferences() {
                                     <div className="w-1/2 h-full bg-white"></div>
                                     <div className="w-1/2 h-full bg-[#0d1117]"></div>
                                 </div>
-                                <span className="text-sm font-medium">Sistema</span>
+                                <span className="text-sm font-medium">{t("system")}</span>
                             </button>
                         </div>
                     </div>
@@ -77,13 +77,13 @@ export default function Preferences() {
             <div className="bg-[#161b27] border border-white/5 rounded-xl overflow-hidden mt-6">
                 <div className="bg-white/[0.02] border-b border-white/5 px-6 py-4 flex items-center gap-2">
                     <Bell size={18} className="text-cyan-400" />
-                    <h3 className="font-medium text-gray-200">Notificaciones y Alertas</h3>
+                    <h3 className="font-medium text-gray-200">{t("notificationsAndAlerts")}</h3>
                 </div>
                 <div className="p-6 space-y-4">
                     <label className="flex items-center justify-between p-4 bg-[#0d1117] border border-white/5 rounded-lg cursor-pointer hover:border-white/10 transition-colors">
                         <div>
-                            <p className="text-sm font-medium text-gray-200">Notificaciones Interfaz</p>
-                            <p className="text-xs text-gray-500 mt-0.5">Mostrar la campanita de notificaciones en el dashboard.</p>
+                            <p className="text-sm font-medium text-gray-200">{t("uiNotifications")}</p>
+                            <p className="text-xs text-gray-500 mt-0.5">{t("uiNotificationsDesc")}</p>
                         </div>
                         <input
                             type="checkbox"
@@ -95,8 +95,8 @@ export default function Preferences() {
 
                     <label className="flex items-center justify-between p-4 bg-[#0d1117] border border-white/5 rounded-lg cursor-pointer hover:border-white/10 transition-colors">
                         <div>
-                            <p className="text-sm font-medium text-gray-200">Alertas por Correo</p>
-                            <p className="text-xs text-gray-500 mt-0.5">Recibir reportes periódicos al email cuando finalicen los escaneos.</p>
+                            <p className="text-sm font-medium text-gray-200">{t("emailAlerts")}</p>
+                            <p className="text-xs text-gray-500 mt-0.5">{t("emailAlertsDesc")}</p>
                         </div>
                         <input
                             type="checkbox"
@@ -113,7 +113,7 @@ export default function Preferences() {
                     onClick={handleSave}
                     className="flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors"
                 >
-                    {saved ? <><Check size={16} /> ¡Guardado!</> : <><Save size={16} /> {t("saveChanges") ?? "Guardar Cambios"}</>}
+                    {saved ? <><Check size={16} /> {t("savedOk")}</> : <><Save size={16} /> {t("saveChanges")}</>}
                 </button>
             </div>
         </div>

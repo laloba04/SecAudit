@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { Database, Table, RefreshCw } from "lucide-react";
+import { useLanguage } from "../i18n/LanguageContext";
 
 export default function DatabaseView() {
+    const { t } = useLanguage();
     const [dbData, setDbData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeTable, setActiveTable] = useState("scans");
@@ -33,27 +35,27 @@ export default function DatabaseView() {
                         <Database size={20} className="text-cyan-400" />
                     </div>
                     <div>
-                        <h2 className="text-xl font-semibold">Inspector SQLite</h2>
-                        <p className="text-sm text-gray-400 mt-1">Explora las tablas y registros en crudo de secaudit.db</p>
+                        <h2 className="text-xl font-semibold">{t("dbInspector")}</h2>
+                        <p className="text-sm text-gray-400 mt-1">{t("dbViewDesc")}</p>
                     </div>
                 </div>
                 <button onClick={fetchDb} className="flex items-center gap-2 px-3 py-1.5 rounded bg-white/5 hover:bg-white/10 text-sm transition-colors text-gray-300">
-                    <RefreshCw size={14} className={loading ? "animate-spin text-cyan-400" : ""} /> Refrescar
+                    <RefreshCw size={14} className={loading ? "animate-spin text-cyan-400" : ""} /> {t("refresh")}
                 </button>
             </div>
 
             {loading && !dbData ? (
-                <div className="flex-1 flex items-center justify-center text-gray-400">Consultando base de datos...</div>
+                <div className="flex-1 flex items-center justify-center text-gray-400">{t("queryingDb")}</div>
             ) : dbData ? (
                 <>
                     <div className="flex gap-2 mb-4">
-                        {dbData.tables.map(t => (
+                        {dbData.tables.map(tbl => (
                             <button
-                                key={t}
-                                onClick={() => setActiveTable(t)}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTable === t ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30" : "bg-white/5 text-gray-400 hover:bg-white/10 border border-transparent"}`}
+                                key={tbl}
+                                onClick={() => setActiveTable(tbl)}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${activeTable === tbl ? "bg-cyan-500/10 text-cyan-400 border border-cyan-500/30" : "bg-white/5 text-gray-400 hover:bg-white/10 border border-transparent"}`}
                             >
-                                <Table size={14} /> Tabla: {t}
+                                <Table size={14} /> {t("table")} {tbl}
                             </button>
                         ))}
                     </div>
@@ -67,7 +69,7 @@ export default function DatabaseView() {
                                             <th key={k} className="px-4 py-3 font-semibold text-gray-300">{k}</th>
                                         ))
                                     ) : (
-                                        <th className="px-4 py-3">Sin datos</th>
+                                        <th className="px-4 py-3">{t("noData")}</th>
                                     )}
                                 </tr>
                             </thead>
@@ -82,7 +84,7 @@ export default function DatabaseView() {
                                     ))
                                 ) : (
                                     <tr>
-                                        <td className="px-4 py-8 text-center text-gray-500 italic">La tabla está vacía.</td>
+                                        <td className="px-4 py-8 text-center text-gray-500 italic">{t("emptyTable")}</td>
                                     </tr>
                                 )}
                             </tbody>
@@ -90,7 +92,7 @@ export default function DatabaseView() {
                     </div>
                 </>
             ) : (
-                <div className="flex-1 flex items-center justify-center text-red-400">Error al leer la base de datos</div>
+                <div className="flex-1 flex items-center justify-center text-red-400">{t("dbError")}</div>
             )}
         </div>
     );

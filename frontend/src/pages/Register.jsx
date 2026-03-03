@@ -41,12 +41,12 @@ export default function Register() {
                     </div>
                 </div>
 
-                <h2 className="text-2xl font-bold text-center mb-2">Crear Cuenta</h2>
-                <p className="text-sm text-gray-400 text-center mb-8">Únete a SecAudit</p>
+                <h2 className="text-2xl font-bold text-center mb-2">{t("createAccount")}</h2>
+                <p className="text-sm text-gray-400 text-center mb-8">{t("joinSecAudit")}</p>
 
                 <form onSubmit={handleRegister} className="space-y-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1.5">Nombre Completo</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-1.5">{t("fullName")}</label>
                         <div className="relative">
                             <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
                             <input
@@ -74,7 +74,7 @@ export default function Register() {
                         </div>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1.5">Contraseña</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-1.5">{t("password")}</label>
                         <div className="relative">
                             <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
                             <input
@@ -94,7 +94,7 @@ export default function Register() {
                                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
                             </button>
                         </div>
-                        <p className="text-[10px] text-gray-500 mt-2">La contraseña debe tener al menos 8 caracteres</p>
+                        <p className="text-[10px] text-gray-500 mt-2">{t("passwordMinLength")}</p>
                     </div>
 
                     <button
@@ -102,12 +102,12 @@ export default function Register() {
                         disabled={loading}
                         className="w-full bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-black font-semibold py-2.5 rounded-lg text-sm transition-colors mt-6"
                     >
-                        {loading ? "Creando..." : "Registrarse"}
+                        {loading ? t("creatingAccount") : t("registerButton")}
                     </button>
                 </form>
 
                 <p className="text-center text-sm text-gray-400 mt-6">
-                    ¿Ya tienes cuenta? <Link to="/login" className="text-cyan-400 hover:underline">Inicia Sesión</Link>
+                    {t("alreadyHaveAccount")} <Link to="/login" className="text-cyan-400 hover:underline">{t("loginHere")}</Link>
                 </p>
             </div>
         </div>

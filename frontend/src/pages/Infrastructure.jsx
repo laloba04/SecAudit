@@ -30,8 +30,8 @@ export default function Infrastructure() {
                         <Server size={20} className="text-cyan-400" />
                     </div>
                     <div>
-                        <h2 className="text-xl font-semibold">{t("infrastructure") ?? "Infraestructura Local"}</h2>
-                        <p className="text-sm text-gray-400 mt-1">Gestiona los nodos de SecAudit y los entornos Sandbox de Docker.</p>
+                        <h2 className="text-xl font-semibold">{t("infrastructure")}</h2>
+                        <p className="text-sm text-gray-400 mt-1">{t("infrastructureDesc")}</p>
                     </div>
                 </div>
 
@@ -41,10 +41,10 @@ export default function Infrastructure() {
                             <div className="flex items-start justify-between mb-4">
                                 <div>
                                     <h3 className="font-semibold text-gray-200">{node.name}</h3>
-                                    <p className="text-xs text-gray-500 mt-0.5">{node.type} • Puerto: {node.port}</p>
+                                    <p className="text-xs text-gray-500 mt-0.5">{node.type} • {t("port")}: {node.port}</p>
                                     {node.url && (
                                         <a href={node.url} target="_blank" rel="noopener noreferrer" className="text-[10px] text-cyan-400 hover:underline mt-1 inline-block">
-                                            ↗ Abrir {node.name}
+                                            ↗ {t("open")} {node.name}
                                         </a>
                                     )}
                                 </div>
@@ -62,11 +62,11 @@ export default function Infrastructure() {
                                 </div>
                                 {node.status === "stopped" ? (
                                     <button onClick={() => handleStartNode(node.id)} className="flex items-center gap-1.5 text-xs font-medium text-cyan-400 hover:text-cyan-300 transition-colors">
-                                        <Play size={12} fill="currentColor" /> Arrancar
+                                        <Play size={12} fill="currentColor" /> {t("startNode")}
                                     </button>
                                 ) : (
                                     <button onClick={() => handleStopNode(node.id)} className="flex items-center gap-1.5 text-xs font-medium text-red-400 hover:text-red-300 transition-colors">
-                                        <Square size={12} fill="currentColor" /> Detener
+                                        <Square size={12} fill="currentColor" /> {t("stopNode")}
                                     </button>
                                 )}
                             </div>

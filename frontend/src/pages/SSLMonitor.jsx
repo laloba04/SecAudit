@@ -10,10 +10,10 @@ export default function SSLMonitor() {
         { domain: "expired.badssl.com", issuer: "DigiCert", expires: "2015-04-09", status: "expired", days: -3900 },
     ];
 
-    const getStatusUI = (status, days) => {
-        if (status === "valid") return { icon: CheckCircle2, cls: "text-green-400 bg-green-400/10", label: "Válido" };
-        if (status === "warning") return { icon: Clock, cls: "text-yellow-400 bg-yellow-400/10", label: "Revisar" };
-        return { icon: ShieldAlert, cls: "text-red-400 bg-red-400/10", label: "Caducado" };
+    const getStatusUI = (status) => {
+        if (status === "valid") return { icon: CheckCircle2, cls: "text-green-400 bg-green-400/10", label: t("validSsl") };
+        if (status === "warning") return { icon: Clock, cls: "text-yellow-400 bg-yellow-400/10", label: t("warningSsl") };
+        return { icon: ShieldAlert, cls: "text-red-400 bg-red-400/10", label: t("expiredSsl") };
     };
 
     return (
@@ -23,23 +23,23 @@ export default function SSLMonitor() {
                     <Lock size={20} className="text-cyan-400" />
                 </div>
                 <div>
-                    <h2 className="text-xl font-semibold">{t("sslMonitor") ?? "Monitor SSL"}</h2>
-                    <p className="text-sm text-gray-400 mt-1">Vigila la caducidad y fortaleza de los certificados TLS.</p>
+                    <h2 className="text-xl font-semibold">{t("sslMonitor")}</h2>
+                    <p className="text-sm text-gray-400 mt-1">{t("sslMonitorDesc")}</p>
                 </div>
             </div>
 
             <table className="w-full text-sm">
                 <thead>
                     <tr className="text-xs text-gray-500 border-b border-white/5">
-                        <th className="text-left px-5 py-3 font-medium">Dominio</th>
-                        <th className="text-left px-5 py-3 font-medium">Autoridad Ceritificadora</th>
-                        <th className="text-left px-5 py-3 font-medium">Expiración</th>
-                        <th className="text-left px-5 py-3 font-medium">Estado</th>
+                        <th className="text-left px-5 py-3 font-medium">{t("domain")}</th>
+                        <th className="text-left px-5 py-3 font-medium">{t("certificateAuthority")}</th>
+                        <th className="text-left px-5 py-3 font-medium">{t("expiration")}</th>
+                        <th className="text-left px-5 py-3 font-medium">{t("status")}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {certs.map((cert, i) => {
-                        const ui = getStatusUI(cert.status, cert.days);
+                        const ui = getStatusUI(cert.status);
                         return (
                             <tr key={i} className="border-b border-white/5 hover:bg-white/[0.03] transition-colors">
                                 <td className="px-5 py-4 text-gray-200 font-medium">{cert.domain}</td>

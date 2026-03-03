@@ -30,7 +30,7 @@ export default function Login() {
                 localStorage.setItem("current_user", JSON.stringify(registeredUser || { name: "Security Admin", email: "admin@secaudit.local" }));
                 navigate("/");
             } else {
-                setError("Credenciales incorrectas.");
+                setError(t("incorrectCredentials"));
             }
             setLoading(false);
         }, 800);
@@ -45,8 +45,8 @@ export default function Login() {
                     </div>
                 </div>
 
-                <h2 className="text-2xl font-bold text-center mb-2">Iniciar Sesión</h2>
-                <p className="text-sm text-gray-400 text-center mb-8">Accede al panel de SecAudit</p>
+                <h2 className="text-2xl font-bold text-center mb-2">{t("signIn")}</h2>
+                <p className="text-sm text-gray-400 text-center mb-8">{t("accessDashboard")}</p>
 
                 {error && <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded-lg mb-6">{error}</div>}
 
@@ -66,7 +66,7 @@ export default function Login() {
                         </div>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1.5">Contraseña</label>
+                        <label className="block text-sm font-medium text-gray-300 mb-1.5">{t("password")}</label>
                         <div className="relative">
                             <Lock size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
                             <input
@@ -90,9 +90,9 @@ export default function Login() {
                     <div className="flex items-center justify-between text-xs my-2">
                         <label className="flex items-center gap-2 cursor-pointer text-gray-400 hover:text-gray-300">
                             <input type="checkbox" className="rounded border-white/20 bg-transparent text-cyan-500 focus:ring-0 focus:ring-offset-0" />
-                            Recordarme
+                            {t("rememberMe")}
                         </label>
-                        <Link to="/forgot-password" className="text-cyan-400 hover:text-cyan-300 transition-colors">¿Olvidaste tu contraseña?</Link>
+                        <Link to="/forgot-password" className="text-cyan-400 hover:text-cyan-300 transition-colors">{t("forgotPasswordQuestion")}</Link>
                     </div>
 
                     <button
@@ -100,12 +100,12 @@ export default function Login() {
                         disabled={loading}
                         className="w-full bg-cyan-500 hover:bg-cyan-400 disabled:opacity-50 text-black font-semibold py-2.5 rounded-lg text-sm transition-colors mt-6"
                     >
-                        {loading ? "Autenticando..." : "Ingresar"}
+                        {loading ? t("authenticating") : t("loginButton")}
                     </button>
                 </form>
 
                 <p className="text-center text-sm text-gray-400 mt-6">
-                    ¿No tienes cuenta? <Link to="/register" className="text-cyan-400 hover:underline">Regístrate</Link>
+                    {t("noAccount")} <Link to="/register" className="text-cyan-400 hover:underline">{t("registerHere")}</Link>
                 </p>
             </div>
         </div>

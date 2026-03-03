@@ -70,11 +70,11 @@ export default function Reports() {
         <div className="bg-[#161b27] border border-white/5 rounded-xl overflow-hidden p-6">
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h2 className="text-xl font-semibold">{t("reports") ?? "Reportes"}</h2>
-                    <p className="text-sm text-gray-400 mt-1">Descarga los análisis detallados en PDF o HTML.</p>
+                    <h2 className="text-xl font-semibold">{t("reports")}</h2>
+                    <p className="text-sm text-gray-400 mt-1">{t("reportsDesc")}</p>
                 </div>
                 <button className="flex items-center gap-2 bg-[#1e2433] border border-white/5 hover:bg-white/5 px-4 py-2 rounded-lg text-sm transition-colors">
-                    <Filter size={16} className="text-cyan-400" /> Filtrar
+                    <Filter size={16} className="text-cyan-400" /> {t("filter")}
                 </button>
             </div>
 
@@ -90,7 +90,7 @@ export default function Reports() {
                             <span>{report.size}</span>
                         </div>
                         <button onClick={() => generateFakePDF(report.name)} className="w-full flex items-center justify-center gap-2 text-sm font-medium text-cyan-400 bg-cyan-500/5 hover:bg-cyan-500/10 py-2 rounded-lg transition-colors">
-                            <Download size={14} /> Descargar Reporte (HTML)
+                            <Download size={14} /> {t("downloadReport")}
                         </button>
                     </div>
                 ))}
@@ -98,17 +98,15 @@ export default function Reports() {
 
             <div className="mt-8 p-6 rounded-xl border border-white/5 bg-[#0d1117] flex flex-col items-center">
                 <FileText size={32} className="text-cyan-400 mb-3" />
-                <h3 className="text-lg font-medium text-gray-200 mb-1">Generador de Reportes</h3>
-                <p className="text-sm text-gray-400 mb-6 text-center max-w-md">
-                    Exporta las auditorías activas a un documento interactivo HTML (simulando Py/WeasyPrint).
-                </p>
+                <h3 className="text-lg font-medium text-gray-200 mb-1">{t("reportGenerator")}</h3>
+                <p className="text-sm text-gray-400 mb-6 text-center max-w-md">{t("reportGeneratorDesc")}</p>
 
                 <form onSubmit={handleGenerateNew} className="flex gap-3 w-full max-w-md">
                     <input
                         type="text"
                         value={newTarget}
                         onChange={(e) => setNewTarget(e.target.value)}
-                        placeholder="ej. mi-empresa.com"
+                        placeholder={t("reportPlaceholder")}
                         className="flex-1 bg-[#161b27] border border-white/10 rounded-lg px-4 py-2 text-sm focus:outline-none focus:border-cyan-500/50"
                         required
                     />
@@ -117,7 +115,7 @@ export default function Reports() {
                         disabled={generating}
                         className="bg-cyan-500 hover:bg-cyan-400 text-black px-4 py-2 rounded-lg text-sm font-semibold transition-colors disabled:opacity-50 flex items-center gap-2"
                     >
-                        {generating ? "Generando..." : "Crear Reporte"}
+                        {generating ? t("generating") : t("createReport")}
                     </button>
                 </form>
             </div>
