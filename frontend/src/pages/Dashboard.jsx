@@ -31,11 +31,22 @@ export default function Dashboard() {
         if (!urlInput.trim() || isScanning) return;
         setIsScanning(true);
         setStatusMessage(t("startingAudit"));
+        const prefs = JSON.parse(localStorage.getItem("secaudit_prefs") || "{}");
+        const user = JSON.parse(localStorage.getItem("current_user") || "{}");
+
+        let notify_email = "";
+        if (prefs.emailAlerts && user.email) {
+            notify_email = user.email;
+        }
+
         try {
             const res = await fetch("/api/scans", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url: urlInput.trim() }),
+                headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "1"
+                },
+                body: JSON.stringify({ url: urlInput.trim(), notify_email }),
             });
             if (res.ok) {
                 setStatusMessage(t("scanCompleted"));

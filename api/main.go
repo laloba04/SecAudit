@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/smtp"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -129,7 +130,8 @@ func getScans(c *gin.Context) {
 // POST /api/scans — Lanzar nueva auditoría
 func createScan(c *gin.Context) {
 	var body struct {
-		URL string `json:"url" binding:"required"`
+		URL         string `json:"url" binding:"required"`
+		NotifyEmail string `json:"notify_email"`
 	}
 	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "URL is required"})
@@ -145,7 +147,7 @@ func createScan(c *gin.Context) {
 	scanID, _ := result.LastInsertId()
 
 	// Ejecutar scanner Python
-	go runScanner(scanID, body.URL)
+	go runScanner(scanID, body.URL, body.NotifyEmail)
 
 	c.JSON(http.StatusCreated, gin.H{"scanId": scanID, "status": "processing"})
 }
@@ -261,7 +263,7 @@ func getDatabaseSummary(c *gin.Context) {
 }
 
 // runScanner ejecuta el scanner Python y guarda resultados en la BD
-func runScanner(scanID int64, url string) {
+func runScanner(scanID int64, url string, notifyEmail string) {
 	// Buscar el directorio del scanner relativo al ejecutable
 	scannerDir := filepath.Join("..", "scanner")
 	scannerPath := filepath.Join(scannerDir, "scanner.py")
@@ -306,6 +308,34 @@ func runScanner(scanID int64, url string) {
 		result.Score, result.FindingsCount, string(modulesJSON), time.Now(), scanID)
 
 	log.Printf("✅ Scan %d completed: score=%d, findings=%d", scanID, result.Score, result.FindingsCount)
+
+	if notifyEmail != "" {
+		go sendEmailAlert(notifyEmail, url, result.Score, result.FindingsCount)
+	}
+}
+
+// Función encargada de enviar el correo (Para que funcione debes cambiar las credenciales simuladas)
+func sendEmailAlert(recipient, targetURL string, score, findingsCount int) {
+	// ⚠️ Has elegido usar tu correo personal como Remitente. ¡Genial!
+	from := "mba.maria08@gmail.com"
+	password := "TU_CONTRASEÑA_DE_APLICACION_GMAIL" // Pon aquí TU CONTRASEÑA DE APLICACIÓN generada en Google
+
+	to := []string{recipient}
+	smtpHost := "smtp.gmail.com"
+	smtpPort := "587"
+
+	subject := fmt.Sprintf("Reporte SecAudit: Escaneo Finalizado para %s", targetURL)
+	body := fmt.Sprintf("El escaneo de seguridad pasivo de %s ha finalizado en SecAudit.\n\nResultados Rápidos:\n- Puntuacion: %d / 100\n- Hallazgos Críticos/Vulnerabilidades: %d\n\nAccede al portal para descargar el informe en PDF.", targetURL, score, findingsCount)
+	message := []byte(fmt.Sprintf("To: %s\r\nSubject: %s\r\n\r\n%s", recipient, subject, body))
+
+	auth := smtp.PlainAuth("", from, password, smtpHost)
+	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message)
+
+	if err != nil {
+		log.Printf("⚠️ No se pudo enviar email a %s (Credenciales SMTP erróneas o por configurar): %v", recipient, err)
+		return
+	}
+	log.Printf("📧 Email de alerta enviado correctamente a %s", recipient)
 }
 
 func main() {
