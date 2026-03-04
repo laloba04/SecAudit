@@ -109,7 +109,7 @@ def main():
         sys.exit(1)
 
     url = sys.argv[1]
-    result = full_scan(url)
+    result = run_all_scans(url)
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 

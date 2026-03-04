@@ -21,3 +21,10 @@ secaudit.db
 # IDE
 .vscode/
 .idea/
+
+# AI / Agents
+.claude/
+
+# OS
+Thumbs.db
+Desktop.ini

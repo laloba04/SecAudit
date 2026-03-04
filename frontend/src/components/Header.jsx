@@ -12,15 +12,38 @@ export default function Header() {
     const [showNotifMenu, setShowNotifMenu] = useState(false);
     const [showProfileMenu, setShowProfileMenu] = useState(false);
 
-    // Notificaciones state
-    const [notifications, setNotifications] = useState([
-        { id: 1, title: "Escaneo completado", desc: "google.com procesado con 80 pts", read: false, type: "success" },
-        { id: 2, title: "Vulnerabilidad Crítica", desc: "Encontrado en juice-shop sandbox", read: false, type: "error" }
-    ]);
+    // Notificaciones reales desde la API
+    const [notifications, setNotifications] = useState([]);
+    const [readIds, setReadIds] = useState(() => {
+        const stored = localStorage.getItem("read_notif_ids");
+        return stored ? JSON.parse(stored) : [];
+    });
 
-    const unreadCount = notifications.filter(n => !n.read).length;
+    useEffect(() => {
+        const fetchNotifs = () => {
+            fetch("/api/notifications")
+                .then(r => r.json())
+                .then(data => {
+                    if (Array.isArray(data)) {
+                        setNotifications(data.map(n => ({
+                            ...n,
+                            read: readIds.includes(n.id)
+                        })));
+                    }
+                })
+                .catch(() => { });
+        };
+        fetchNotifs();
+        const interval = setInterval(fetchNotifs, 30000);
+        return () => clearInterval(interval);
+    }, []);
+
+    const unreadCount = notifications.filter(n => !readIds.includes(n.id)).length;
 
     const markAllAsRead = () => {
+        const allIds = notifications.map(n => n.id);
+        setReadIds(allIds);
+        localStorage.setItem("read_notif_ids", JSON.stringify(allIds));
         setNotifications(notifications.map(n => ({ ...n, read: true })));
     };
 
@@ -112,9 +135,9 @@ export default function Header() {
                     {showNotifMenu && (
                         <div className="absolute right-0 top-full mt-1 w-64 bg-[#1e2433] border border-white/10 rounded-lg shadow-xl z-50 overflow-hidden">
                             <div className="p-3 border-b border-white/5 flex items-center justify-between">
-                                <span className="font-medium text-sm text-white">Notificaciones</span>
+                                <span className="font-medium text-sm text-white">{t("notificationsLabel")}</span>
                                 {unreadCount > 0 && (
-                                    <span onClick={markAllAsRead} className="text-[10px] text-cyan-400 cursor-pointer hover:underline">Marcar leídas</span>
+                                    <span onClick={markAllAsRead} className="text-[10px] text-cyan-400 cursor-pointer hover:underline">{t("markAllRead")}</span>
                                 )}
                             </div>
                             <div className="p-2 space-y-1 max-h-60 overflow-y-auto">
@@ -124,7 +147,7 @@ export default function Header() {
                                         <p className="text-[10px] text-gray-400 mt-0.5">{n.desc}</p>
                                     </div>
                                 )) : (
-                                    <div className="p-4 text-center text-xs text-gray-500">No hay notificaciones</div>
+                                    <div className="p-4 text-center text-xs text-gray-500">{t("noNotifications")}</div>
                                 )}
                             </div>
                         </div>
@@ -147,9 +170,6 @@ export default function Header() {
                             </div>
                             <Link to="/profile" onClick={() => setShowProfileMenu(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
                                 <User size={14} /> {t("myProfile") ?? "Mi Perfil"}
-                            </Link>
-                            <Link to="/preferences" onClick={() => setShowProfileMenu(false)} className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors">
-                                <SettingsIcon size={14} /> {t("preferences") ?? "Preferencias"}
                             </Link>
                             <div className="border-t border-white/5 my-1"></div>
                             <button

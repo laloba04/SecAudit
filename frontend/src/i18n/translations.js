@@ -172,6 +172,42 @@ export const translations = {
     uiNotificationsDesc: "Show the notification bell on the dashboard.",
     emailAlerts: "Email Alerts",
     emailAlertsDesc: "Receive periodic email reports when scans complete.",
+
+    // Notifications dropdown
+    notificationsLabel: "Notifications",
+    markAllRead: "Mark all read",
+    noNotifications: "No notifications",
+
+    // Profile page
+    emailCannotChange: "Email cannot be changed",
+    changePassword: "Change Password",
+    currentPassword: "Current password",
+    newPassword: "New password",
+    confirmPassword: "Confirm password",
+    updatePassword: "Update Password",
+    passwordUpdated: "Password updated",
+    incorrectCurrentPassword: "Current password is incorrect",
+    passwordsMismatch: "Passwords do not match",
+
+    // Vulnerabilities page
+    vulnDesc: "Summary of vulnerabilities detected across all scans.",
+    totalFindings: "Total findings detected",
+    topVulnerabilities: "Most frequent vulnerabilities",
+    finding: "Finding",
+    category: "Category",
+    occurrences: "Occurrences",
+    noVulnerabilities: "No vulnerabilities found!",
+    scanToSeeVulns: "Run a scan from the Dashboard to see results here.",
+
+    // SSL Monitor page
+    sslDesc: "SSL/TLS status of scanned domains.",
+    sslFinding: "SSL Result",
+    scannedAt: "Scanned",
+    noSSLData: "No SSL data yet.",
+    scanToSeeSSL: "Run a scan from the Dashboard to see SSL status here.",
+    valid: "Valid",
+    warning: "Review",
+    expired: "Issue",
   },
   es: {
     // Header & Navegación
@@ -348,6 +384,42 @@ export const translations = {
     uiNotificationsDesc: "Mostrar la campanita de notificaciones en el dashboard.",
     emailAlerts: "Alertas por Correo",
     emailAlertsDesc: "Recibir reportes periódicos al email cuando finalicen los escaneos.",
+
+    // Notifications dropdown
+    notificationsLabel: "Notificaciones",
+    markAllRead: "Marcar leídas",
+    noNotifications: "No hay notificaciones",
+
+    // Página de Perfil
+    emailCannotChange: "El email no se puede modificar",
+    changePassword: "Cambiar Contraseña",
+    currentPassword: "Contraseña actual",
+    newPassword: "Nueva contraseña",
+    confirmPassword: "Confirmar contraseña",
+    updatePassword: "Actualizar Contraseña",
+    passwordUpdated: "Contraseña actualizada",
+    incorrectCurrentPassword: "La contraseña actual es incorrecta",
+    passwordsMismatch: "Las contraseñas no coinciden",
+
+    // Vulnerabilidades
+    vulnDesc: "Resumen de vulnerabilidades detectadas en todos los escaneos.",
+    totalFindings: "Total de hallazgos detectados",
+    topVulnerabilities: "Vulnerabilidades más frecuentes",
+    finding: "Hallazgo",
+    category: "Categoría",
+    occurrences: "Ocurrencias",
+    noVulnerabilities: "¡Sin vulnerabilidades!",
+    scanToSeeVulns: "Realiza un escaneo desde el Panel para ver resultados aquí.",
+
+    // Monitor SSL
+    sslDesc: "Estado SSL/TLS de los dominios escaneados.",
+    sslFinding: "Resultado SSL",
+    scannedAt: "Escaneado",
+    noSSLData: "No hay datos SSL todavía.",
+    scanToSeeSSL: "Realiza un escaneo desde el Panel para ver el estado SSL aquí.",
+    valid: "Válido",
+    warning: "Revisar",
+    expired: "Problema",
   },
   eu: {
     // Goiburua eta Nabigazioa
@@ -523,5 +595,41 @@ export const translations = {
     uiNotificationsDesc: "Erakutsi jakinarazpen-txirrina panelean.",
     emailAlerts: "Email Alertak",
     emailAlertsDesc: "Jaso aldizkako email txostenak eskaneatuak amaitutakoan.",
+
+    // Notifications dropdown
+    notificationsLabel: "Jakinarazpenak",
+    markAllRead: "Irakurrita markatu",
+    noNotifications: "Ez dago jakinarazpenik",
+
+    // Profil orrialdea
+    emailCannotChange: "Emaila ezin da aldatu",
+    changePassword: "Pasahitza Aldatu",
+    currentPassword: "Oraingo pasahitza",
+    newPassword: "Pasahitz berria",
+    confirmPassword: "Pasahitza berretsi",
+    updatePassword: "Pasahitza Eguneratu",
+    passwordUpdated: "Pasahitza eguneratua",
+    incorrectCurrentPassword: "Oraingo pasahitza okerra da",
+    passwordsMismatch: "Pasahitzak ez datoz bat",
+
+    // Ahuleziak
+    vulnDesc: "Eskaneatu guztietan detektatutako ahulezien laburpena.",
+    totalFindings: "Detektatutako aurkikuntza guztira",
+    topVulnerabilities: "Ahulezia ohikoenak",
+    finding: "Aurkikuntza",
+    category: "Kategoria",
+    occurrences: "Agerpenak",
+    noVulnerabilities: "Ez da ahuleziarik aurkitu!",
+    scanToSeeVulns: "Egin eskaneatu bat Paneletik emaitzak hemen ikusteko.",
+
+    // SSL Monitorea
+    sslDesc: "Eskaneatutako domeinu-en SSL/TLS egoera.",
+    sslFinding: "SSL Emaitza",
+    scannedAt: "Eskaneatua",
+    noSSLData: "Ez dago SSL daturik oraindik.",
+    scanToSeeSSL: "Egin eskaneatu bat Paneletik SSL egoera hemen ikusteko.",
+    valid: "Baliozkoa",
+    warning: "Berrikusi",
+    expired: "Arazoa",
   },
 };

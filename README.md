@@ -40,30 +40,34 @@ Analiza cabeceras HTTP, certificados SSL/TLS y dependencias públicas para detec
 
 ```
 secaudit/
-├── api/                        # Go + Gin
-│   ├── main.go                 # Entry point
-│   ├── handlers/               # Controladores HTTP
-│   ├── models/                 # Structs de BD (GORM)
-│   ├── middleware/             # JWT auth
-│   └── go.mod
-├── scanner/                    # Python
-│   ├── headers_scanner.py      # Análisis de cabeceras HTTP
-│   ├── ssl_scanner.py          # Verificación SSL/TLS
-│   ├── config_checker.py       # Configuraciones inseguras
-│   ├── deps_auditor.py         # Dependencias con CVEs
-│   ├── report_generator.py     # Generación PDF + HTML
-│   ├── templates/              # Plantillas Jinja2
+├── .github/
+│   └── workflows/
+│       └── ci.yml                # GitHub Actions CI/CD
+├── api/                           # Go + Gin
+│   ├── main.go                    # Entry point + handlers
+│   ├── main_test.go               # Go integration tests
+│   ├── go.mod
+│   └── go.sum
+├── scanner/                       # Python
+│   ├── headers_scanner.py         # Análisis de cabeceras HTTP
+│   ├── ssl_scanner.py             # Verificación SSL/TLS
+│   ├── config_checker.py          # Configuraciones inseguras
+│   ├── deps_auditor.py            # Dependencias con CVEs
+│   ├── scanner.py                 # Orquestador principal
+│   ├── report_generator.py        # Generación PDF + HTML
+│   ├── templates/
+│   │   └── report.html            # Plantilla Jinja2 para reportes
 │   └── requirements.txt
-├── frontend/                   # React + TailwindCSS
+├── frontend/                      # React + TailwindCSS
 │   ├── src/
-│   │   ├── pages/              # Dashboard, ScanDetail, History
-│   │   └── components/         # FindingCard, ScoreChart, Badge
+│   │   ├── pages/                 # Dashboard, ScanDetail, History, Reports, etc.
+│   │   ├── components/            # Sidebar, Header, Layout, utils
+│   │   └── i18n/                  # Traducciones EN/ES/EU
 │   └── package.json
 ├── sandbox/
-│   └── docker-compose.yml      # OWASP Juice Shop + DVWA
+│   └── docker-compose.yml         # OWASP Juice Shop + DVWA + Uptime Kuma + Dozzle
 ├── tests/
-│   ├── test_scanner.py         # pytest
-│   └── api_test.go             # go test
+│   └── test_scanner.py            # pytest
 └── README.md
 ```
 
@@ -158,7 +162,7 @@ SecAudit realiza **únicamente análisis pasivo**:
 - [x] **Fase 2** — API Go + Gin + base de datos SQLite
 - [x] **Fase 3** — Reportes PDF + módulos config_checker y deps_auditor
 - [x] **Fase 4** — Dashboard React + comparativa de auditorías
-- [ ] **Fase 5** — Tests, CI/CD, despliegue público y portafolio
+- [x] **Fase 5** — Tests, CI/CD, despliegue público y portafolio
 
 ---
 

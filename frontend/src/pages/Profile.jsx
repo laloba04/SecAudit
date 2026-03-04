@@ -1,156 +1,200 @@
-import { useLanguage } from "../i18n/LanguageContext";
-import { User, Mail, Save, Shield, Key, Check } from "lucide-react";
 import { useState, useEffect } from "react";
+import { useLanguage } from "../i18n/LanguageContext";
+import { User, Mail, Lock, Save, Check } from "lucide-react";
 
 export default function Profile() {
     const { t } = useLanguage();
-    const [user, setUser] = useState({ name: "", email: "", password: "" });
-    const [name, setName] = useState("");
+
+    // Cargar datos del usuario desde localStorage
+    const loadUser = () => {
+        const stored = localStorage.getItem("current_user");
+        return stored ? JSON.parse(stored) : { name: "Security Admin", email: "admin@secaudit.local" };
+    };
+
+    const [user, setUser] = useState(loadUser);
+    const [name, setName] = useState(user.name);
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [saved, setSaved] = useState(false);
+    const [passwordSaved, setPasswordSaved] = useState(false);
     const [error, setError] = useState("");
 
-    useEffect(() => {
-        const currentUserStr = localStorage.getItem("current_user");
-        if (currentUserStr) {
-            const parsed = JSON.parse(currentUserStr);
-            setUser(parsed);
-            setName(parsed.name || "");
-        } else {
-            const defInfo = { name: "Security Admin", email: "admin@secaudit.local" };
-            setUser(defInfo);
-            setName("Security Admin");
-        }
-    }, []);
-
-    const handleSave = () => {
-        setError("");
-        if (newPassword && !currentPassword) {
-            setError(t("mustEnterCurrentPassword"));
-            return;
-        }
-
-        const usersStr = localStorage.getItem("secaudit_users");
-        let users = usersStr ? JSON.parse(usersStr) : [];
-        const userIndex = users.findIndex(u => u.email === user.email);
-
-        let finalPassword = user.password;
-        if (newPassword && currentPassword) {
-            if (userIndex !== -1 && users[userIndex].password !== currentPassword) {
-                setError(t("incorrectCurrentPassword"));
-                return;
-            } else if (newPassword.length < 8) {
-                setError(t("newPasswordMinLength"));
-                return;
-            }
-            finalPassword = newPassword;
-        }
-
-        const updatedUser = { ...user, name, password: finalPassword };
-        setUser(updatedUser);
-
-        if (userIndex !== -1) {
-            users[userIndex] = updatedUser;
-            localStorage.setItem("secaudit_users", JSON.stringify(users));
-        }
-
+    // Guardar cambios de nombre
+    const handleSaveProfile = (e) => {
+        e.preventDefault();
+        const updatedUser = { ...user, name };
         localStorage.setItem("current_user", JSON.stringify(updatedUser));
+
+        // También actualizar en la lista de usuarios registrados
+        const usersStr = localStorage.getItem("secaudit_users");
+        if (usersStr) {
+            const users = JSON.parse(usersStr);
+            const idx = users.findIndex(u => u.email === user.email);
+            if (idx >= 0) {
+                users[idx].name = name;
+                localStorage.setItem("secaudit_users", JSON.stringify(users));
+            }
+        }
+
+        setUser(updatedUser);
         setSaved(true);
-        setCurrentPassword("");
-        setNewPassword("");
         setTimeout(() => setSaved(false), 2000);
     };
 
+    // Cambiar contraseña
+    const handleChangePassword = (e) => {
+        e.preventDefault();
+        setError("");
+
+        if (newPassword.length < 8) {
+            setError(t("passwordMinLength") ?? "La contraseña debe tener al menos 8 caracteres");
+            return;
+        }
+        if (newPassword !== confirmPassword) {
+            setError(t("passwordsMismatch") ?? "Las contraseñas no coinciden");
+            return;
+        }
+
+        // Verificar contraseña actual
+        if (user.password && currentPassword !== user.password) {
+            setError(t("incorrectCurrentPassword") ?? "La contraseña actual es incorrecta");
+            return;
+        }
+
+        // Actualizar contraseña
+        const updatedUser = { ...user, password: newPassword };
+        localStorage.setItem("current_user", JSON.stringify(updatedUser));
+
+        const usersStr = localStorage.getItem("secaudit_users");
+        if (usersStr) {
+            const users = JSON.parse(usersStr);
+            const idx = users.findIndex(u => u.email === user.email);
+            if (idx >= 0) {
+                users[idx].password = newPassword;
+                localStorage.setItem("secaudit_users", JSON.stringify(users));
+            }
+        }
+
+        setUser(updatedUser);
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        setPasswordSaved(true);
+        setTimeout(() => setPasswordSaved(false), 2000);
+    };
+
     return (
-        <div className="max-w-4xl mx-auto space-y-6">
-            <h2 className="text-2xl font-semibold mb-6">{t("myProfile")}</h2>
+        <div className="p-6 space-y-6 max-w-2xl">
+            <h1 className="text-xl font-bold">{t("myProfile") ?? "Mi Perfil"}</h1>
 
-            <div className="bg-[#161b27] border border-white/5 rounded-xl overflow-hidden">
-                <div className="bg-white/[0.02] border-b border-white/5 px-6 py-4 flex items-center gap-2">
-                    <User size={18} className="text-cyan-400" />
-                    <h3 className="font-medium text-gray-200">{t("personalInfo")}</h3>
-                </div>
-                <div className="p-6 space-y-5">
-                    <div className="flex items-center gap-6 mb-8">
-                        <div className="w-20 h-20 rounded-full bg-cyan-500/20 text-cyan-400 font-bold text-3xl flex items-center justify-center border border-cyan-500/30">
-                            {user.name ? user.name.charAt(0).toUpperCase() : "S"}
-                        </div>
-                        <div>
-                            <button className="px-4 py-2 bg-white/5 hover:bg-white/10 rounded-lg text-sm text-white font-medium transition-colors border border-white/5">
-                                {t("changeAvatar")}
-                            </button>
-                            <p className="text-xs text-gray-500 mt-2">{t("avatarFormats")}</p>
-                        </div>
+            {/* Avatar + Info */}
+            <div className="bg-[#161b27] border border-white/5 rounded-xl p-6">
+                <div className="flex items-center gap-4 mb-6">
+                    <div className="w-16 h-16 rounded-full bg-cyan-500/20 flex items-center justify-center text-2xl font-bold text-cyan-400">
+                        {name?.charAt(0)?.toUpperCase() || "S"}
                     </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-1.5">{t("fullName")}</label>
-                            <div className="relative">
-                                <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-                                <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    className="w-full bg-[#0d1117] border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-cyan-500/50"
-                                />
-                            </div>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-400 mb-1.5">{t("registeredEmail")}</label>
-                            <div className="relative">
-                                <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
-                                <input type="email" defaultValue={user.email} className="w-full bg-[#0d1117] border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-cyan-500/50" readOnly />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="bg-[#161b27] border border-white/5 rounded-xl overflow-hidden mt-6">
-                <div className="bg-white/[0.02] border-b border-white/5 px-6 py-4 flex items-center gap-2">
-                    <Shield size={18} className="text-cyan-400" />
-                    <h3 className="font-medium text-gray-200">{t("accountSecurity")}</h3>
-                </div>
-                {error && <div className="m-6 mb-0 p-3 bg-red-500/10 border border-red-500/20 text-red-400 text-sm rounded-lg">{error}</div>}
-                <div className="p-6 space-y-5">
                     <div>
-                        <label className="block text-sm font-medium text-gray-400 mb-1.5">{t("currentPassword")}</label>
-                        <div className="relative max-w-md">
-                            <Key size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                        <p className="font-semibold text-lg">{name}</p>
+                        <p className="text-sm text-gray-400">{user.email}</p>
+                    </div>
+                </div>
+
+                <form onSubmit={handleSaveProfile} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                            {t("fullName") ?? "Nombre completo"}
+                        </label>
+                        <div className="relative">
+                            <User size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
                             <input
-                                type="password"
-                                value={currentPassword}
-                                onChange={(e) => setCurrentPassword(e.target.value)}
-                                placeholder="••••••••"
-                                className="w-full bg-[#0d1117] border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-cyan-500/50"
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="w-full bg-[#0d1117] border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-cyan-500 transition-colors"
                             />
                         </div>
                     </div>
                     <div>
-                        <label className="block text-sm font-medium text-gray-400 mb-1.5">{t("newPassword")}</label>
-                        <div className="relative max-w-md">
-                            <Key size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
+                        <label className="block text-sm font-medium text-gray-300 mb-1.5">Email</label>
+                        <div className="relative">
+                            <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
                             <input
-                                type="password"
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                placeholder={t("minCharsHint")}
-                                className="w-full bg-[#0d1117] border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm text-gray-200 focus:outline-none focus:border-cyan-500/50"
+                                type="email"
+                                value={user.email}
+                                disabled
+                                className="w-full bg-[#0d1117] border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm opacity-50 cursor-not-allowed"
                             />
                         </div>
+                        <p className="text-[10px] text-gray-500 mt-1">{t("emailCannotChange") ?? "El email no se puede modificar"}</p>
                     </div>
-                </div>
+                    <button
+                        type="submit"
+                        className="flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
+                    >
+                        {saved ? <><Check size={16} /> {t("saved") ?? "Guardado"}</> : <><Save size={16} /> {t("saveChanges") ?? "Guardar Cambios"}</>}
+                    </button>
+                </form>
             </div>
 
-            <div className="flex justify-end pt-4">
-                <button
-                    onClick={handleSave}
-                    className="flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors"
-                >
-                    {saved ? <><Check size={16} /> {t("savedOk")}</> : <><Save size={16} /> {t("saveChanges")}</>}
-                </button>
+            {/* Change Password */}
+            <div className="bg-[#161b27] border border-white/5 rounded-xl p-6">
+                <h2 className="font-semibold mb-4 flex items-center gap-2">
+                    <Lock size={16} className="text-cyan-400" />
+                    {t("changePassword") ?? "Cambiar Contraseña"}
+                </h2>
+
+                {error && (
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded-lg mb-4">
+                        {error}
+                    </div>
+                )}
+
+                <form onSubmit={handleChangePassword} className="space-y-4">
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                            {t("currentPassword") ?? "Contraseña actual"}
+                        </label>
+                        <input
+                            type="password"
+                            value={currentPassword}
+                            onChange={(e) => setCurrentPassword(e.target.value)}
+                            className="w-full bg-[#0d1117] border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-500 transition-colors"
+                            placeholder="••••••••"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                            {t("newPassword") ?? "Nueva contraseña"}
+                        </label>
+                        <input
+                            type="password"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            className="w-full bg-[#0d1117] border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-500 transition-colors"
+                            placeholder="••••••••"
+                        />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                            {t("confirmPassword") ?? "Confirmar contraseña"}
+                        </label>
+                        <input
+                            type="password"
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                            className="w-full bg-[#0d1117] border border-white/10 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:border-cyan-500 transition-colors"
+                            placeholder="••••••••"
+                        />
+                        <p className="text-[10px] text-gray-500 mt-1">{t("passwordMinLength") ?? "Mínimo 8 caracteres"}</p>
+                    </div>
+                    <button
+                        type="submit"
+                        className="flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
+                    >
+                        {passwordSaved ? <><Check size={16} /> {t("passwordUpdated") ?? "Contraseña actualizada"}</> : <><Lock size={16} /> {t("updatePassword") ?? "Actualizar Contraseña"}</>}
+                    </button>
+                </form>
             </div>
         </div>
     );

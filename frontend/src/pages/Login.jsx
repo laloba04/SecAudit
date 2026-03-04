@@ -27,7 +27,8 @@ export default function Login() {
             if ((email === "admin@secaudit.local" && password === "admin") || registeredUser) {
                 // Éxito
                 localStorage.setItem("token", "fake-jwt-token-123");
-                localStorage.setItem("current_user", JSON.stringify(registeredUser || { name: "Security Admin", email: "admin@secaudit.local" }));
+                const userData = registeredUser || { name: "Security Admin", email: "admin@secaudit.local", password: "admin" };
+                localStorage.setItem("current_user", JSON.stringify(userData));
                 navigate("/");
             } else {
                 setError(t("incorrectCredentials"));
