@@ -67,24 +67,20 @@ export default function Infrastructure() {
                 {dockerAvailable === false && (
                     <div className="bg-yellow-500/10 border border-yellow-500/20 text-yellow-400 text-sm px-4 py-3 rounded-lg mb-4 flex items-center gap-2">
                         <AlertTriangle size={16} />
-                        {t("dockerNotAvailable") ?? "Docker no está disponible. Instala Docker Desktop para gestionar los servicios del sandbox."}
+                        {t("dockerNotAvailable")}
                     </div>
                 )}
 
                 {dockerAvailable === true && (
                     <div className="bg-green-500/10 border border-green-500/20 text-green-400 text-sm px-4 py-3 rounded-lg mb-4">
-                        ✅ Docker disponible
+                        ✅ {t("dockerAvailable")}
                     </div>
                 )}
 
                 {/* Services grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {services.map((svc) => {
-                        const infrastructureNodes = [
-                            { name: t("masterNode") || "Master Node", port: 5173, status: "open", color: "cyan" },
-                            { name: t("pythonScanner") || "Python Scanner", port: "Orchestrator", status: "open", color: "blue" },
-                            { name: t("goApiServer") || "Go API Server", port: 8080, status: "open", color: "green" },
-                        ]; const info = SERVICE_INFO[svc.service] || { name: svc.service, desc: "Service", port: "—" };
+                        const info = SERVICE_INFO[svc.service] || { name: svc.service, desc: "Service", port: "—" };
                         const isRunning = svc.status === "running";
                         const isLoading = actionLoading[svc.service];
 
@@ -93,7 +89,7 @@ export default function Infrastructure() {
                                 <div className="flex items-center justify-between mb-3">
                                     <div>
                                         <h3 className="font-semibold">{info.name}</h3>
-                                        <p className="text-xs text-gray-500">{info.desc} • Puerto: {info.port}</p>
+                                        <p className="text-xs text-gray-500">{info.desc} • {t("port")}: {info.port}</p>
                                     </div>
                                     <span className={`text-[10px] font-bold px-2.5 py-1 rounded-full ${isRunning ? "text-green-400 bg-green-400/10" : "text-gray-400 bg-gray-400/10"}`}>
                                         {isRunning ? "● RUNNING" : "■ STOPPED"}
@@ -109,7 +105,7 @@ export default function Infrastructure() {
 
                                 <div className="flex items-center justify-between mt-2">
                                     <div className="text-xs text-gray-500">
-                                        Container: {svc.container}
+                                        {t("container")}: {svc.container}
                                     </div>
                                     <button
                                         disabled={isLoading || !dockerAvailable}
@@ -122,9 +118,9 @@ export default function Infrastructure() {
                                         {isLoading ? (
                                             <RefreshCw size={12} className="animate-spin" />
                                         ) : isRunning ? (
-                                            <><Square size={12} /> {t("stop") ?? "Detener"}</>
+                                            <><Square size={12} /> {t("stop")}</>
                                         ) : (
-                                            <><Play size={12} /> {t("start") ?? "Arrancar"}</>
+                                            <><Play size={12} /> {t("start")}</>
                                         )}
                                     </button>
                                 </div>

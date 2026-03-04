@@ -5,7 +5,7 @@ import { scoreColor, StatusBadge } from "../components/utils";
 import { Search } from "lucide-react";
 
 export default function History() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [searchParams, setSearchParams] = useSearchParams();
     const [scans, setScans] = useState([]);
     const [isLoadingScans, setIsLoadingScans] = useState(true);
@@ -84,7 +84,7 @@ export default function History() {
                                 <td className="px-5 py-4"><StatusBadge status={scan.status} /></td>
                                 <td className={`px-5 py-4 font-bold ${scoreColor(scan.score)}`}>{scan.score ?? "—"}</td>
                                 <td className="px-5 py-4 text-gray-400 text-sm">
-                                    {scan.created_at ? new Date(scan.created_at).toLocaleString() : "—"}
+                                    {scan.created_at ? new Date(scan.created_at).toLocaleString(language) : "—"}
                                 </td>
                                 <td className="px-5 py-4">
                                     <Link to={`/scan/${scan.id}`} className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium">

@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useLanguage } from "./i18n/LanguageContext";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import ScanDetail from "./pages/ScanDetail";
@@ -22,6 +23,7 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default function App() {
+    const { t } = useLanguage();
     useEffect(() => {
         const prefs = JSON.parse(localStorage.getItem("secaudit_prefs") || "{}");
         let isLight = false;
@@ -60,7 +62,7 @@ export default function App() {
                     <Route path="db" element={<DatabaseView />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="preferences" element={<Preferences />} />
-                    <Route path="*" element={<div className="p-10 text-center text-gray-400 flex flex-col items-center justify-center h-full"><span className="text-2xl font-bold mb-2">404</span>Página no encontrada o en construcción</div>} />
+                    <Route path="*" element={<div className="p-10 text-center text-gray-400 flex flex-col items-center justify-center h-full"><span className="text-2xl font-bold mb-2">404</span>{t("pageNotFound")} {t("inConstruction") || "or under construction"}</div>} />
                 </Route>
             </Routes>
         </Router>

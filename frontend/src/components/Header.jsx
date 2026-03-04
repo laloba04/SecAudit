@@ -141,12 +141,31 @@ export default function Header() {
                                 )}
                             </div>
                             <div className="p-2 space-y-1 max-h-60 overflow-y-auto">
-                                {notifications.length > 0 ? notifications.map(n => (
-                                    <div key={n.id} className={`p-2 rounded-lg cursor-pointer ${n.read ? 'opacity-60' : 'hover:bg-white/5 bg-white/[0.02]'}`}>
-                                        <p className={`text-xs font-medium ${n.type === 'error' ? 'text-red-400' : 'text-white'}`}>{n.title}</p>
-                                        <p className="text-[10px] text-gray-400 mt-0.5">{n.desc}</p>
-                                    </div>
-                                )) : (
+                                {notifications.length > 0 ? notifications.map(n => {
+                                    // Translate title if it matches a key
+                                    const titleStr = n.title.startsWith("⚠️")
+                                        ? `⚠️ ${t(n.title.replace("⚠️ ", ""))} `
+                                        : (t(n.title) || n.title);
+
+                                    // Localize description (parse parts like "score — pts, findings")
+                                    let descStr = n.desc;
+                                    if (n.desc.includes("pts, findings")) {
+                                        const [url, rest] = n.desc.split(" — ");
+                                        const parts = rest.split(",");
+                                        const pts = parts[0].replace("pts", "").trim();
+                                        const finds = parts[1].replace("findings", "").trim();
+                                        descStr = `${url} — ${pts} ${t("notifFindingsDesc").split(",")[0].trim()}, ${finds} ${t("notifFindingsDesc").split(",")[1].trim()}`;
+                                    } else if (n.desc.includes("connectionError")) {
+                                        descStr = n.desc.replace("connectionError", t("connectionError"));
+                                    }
+
+                                    return (
+                                        <div key={n.id} className={`p-2 rounded-lg cursor-pointer ${n.read ? 'opacity-60' : 'hover:bg-white/5 bg-white/[0.02]'}`}>
+                                            <p className={`text-xs font-medium ${n.type === 'error' ? 'text-red-400' : 'text-white'}`}>{titleStr}</p>
+                                            <p className="text-[10px] text-gray-400 mt-0.5">{descStr}</p>
+                                        </div>
+                                    );
+                                }) : (
                                     <div className="p-4 text-center text-xs text-gray-500">{t("noNotifications")}</div>
                                 )}
                             </div>

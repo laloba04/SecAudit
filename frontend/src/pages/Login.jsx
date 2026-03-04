@@ -36,7 +36,7 @@ export default function Login() {
                 navigate("/");
             }
         } catch (err) {
-            setError("Error de conexión con el servidor");
+            setError(t("connectionError") || "Error de conexión con el servidor");
         } finally {
             setLoading(false);
         }

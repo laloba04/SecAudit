@@ -634,8 +634,8 @@ func getNotifications(c *gin.Context) {
 		if status == "completed" {
 			notifs = append(notifs, gin.H{
 				"id":    id,
-				"title": "Escaneo completado",
-				"desc":  fmt.Sprintf("%s — %d pts, %d hallazgos", targetURL, score.Int64, findingsCount),
+				"title": "scanCompleted",
+				"desc":  fmt.Sprintf("%s — %d pts, %d findings", targetURL, score.Int64, findingsCount),
 				"type":  "success",
 				"time":  createdAt,
 			})
@@ -643,8 +643,8 @@ func getNotifications(c *gin.Context) {
 		} else if status == "failed" {
 			notifs = append(notifs, gin.H{
 				"id":    id,
-				"title": "Escaneo fallido",
-				"desc":  fmt.Sprintf("%s — error de conexión", targetURL),
+				"title": "scanFailed",
+				"desc":  fmt.Sprintf("%s — connectionError", targetURL),
 				"type":  "error",
 				"time":  createdAt,
 			})

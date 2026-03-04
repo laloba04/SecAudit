@@ -22,11 +22,11 @@ export default function Settings() {
     };
 
     const handlePurge = () => {
-        if (window.confirm("¿Seguro que deseas purgar la base de datos de historiales? Se eliminarán todos los escaneos previos.")) {
+        if (window.confirm(t("purgeConfirm") ?? "¿Seguro que deseas purgar la base de datos de historiales? Se eliminarán todos los escaneos previos.")) {
             // Mock purge
             fetch("/api/dev/db", { method: "DELETE" }).catch(() => { });
             setDbSize("0 KB");
-            alert("Historial limpiado.");
+            alert(t("purgeSuccess") ?? "Historial limpiado.");
         }
     };
 
@@ -88,7 +88,7 @@ export default function Settings() {
                     onClick={handleSave}
                     className="flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-6 py-2.5 rounded-lg text-sm transition-colors"
                 >
-                    {saved ? <><Check size={16} /> ¡Guardado!</> : <><Save size={16} /> {t("saveChanges") ?? "Guardar Cambios"}</>}
+                    {saved ? <><Check size={16} /> {t("savedOk") || "¡Guardado!"}</> : <><Save size={16} /> {t("saveChanges") ?? "Guardar Cambios"}</>}
                 </button>
             </div>
         </div>

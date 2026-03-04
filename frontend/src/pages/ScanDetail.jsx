@@ -40,7 +40,7 @@ export default function ScanDetail() {
                     <h2 className="text-2xl font-bold truncate">{scanDetails.target_url}</h2>
                     <div className="flex items-center gap-3 mt-2 text-sm text-gray-400">
                         <StatusBadge status={scanDetails.status} />
-                        <span>{t("date") ?? "Date"}: {new Date(scanDetails.created_at).toLocaleString()}</span>
+                        <span>{t("date") ?? "Date"}: {new Date(scanDetails.created_at).toLocaleString(language)}</span>
                         <a href={scanDetails.target_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-cyan-400 hover:underline">
                             <ExternalLink size={12} /> {t("visit")}
                         </a>

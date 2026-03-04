@@ -57,7 +57,7 @@ export default function SSLMonitor() {
                                     <tr key={i} className="border-t border-white/5 hover:bg-white/[0.02]">
                                         <td className="px-4 py-3 font-medium">{item.domain}</td>
                                         <td className="px-4 py-3 text-gray-400">
-                                            {item.finding || "✅ Sin problemas SSL detectados"}
+                                            {item.finding || `✅ ${t("noSSLIssuesDetected")}`}
                                         </td>
                                         <td className="px-4 py-3 text-gray-500">
                                             {new Date(item.scanned_at).toLocaleDateString()}
