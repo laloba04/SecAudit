@@ -60,25 +60,48 @@ export default function ScanDetail() {
                 </div>
             ) : (
                 <div className="space-y-4">
-                    {scanDetails.findings.map((f, i) => (
-                        <div key={i} className="bg-[#0d1117] border border-white/5 rounded-lg p-5 space-y-3">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-3">
-                                    <span className={`text-xs font-bold px-2 py-1 rounded-lg uppercase ${severityColor(f.severity)}`}>
-                                        {f.severity}
+                    {scanDetails.findings.map((f, i) => {
+                        const catalog = t("vulnCatalog") || {};
+                        const localized = catalog[f.title] || {};
+
+                        // Mapping raw backend strings to translation keys
+                        const sevKey = (f.severity || "low").toLowerCase();
+                        const catMapping = {
+                            "Headers": "catHeaders",
+                            "SSL/TLS": "catSSL",
+                            "Configuration": "catConfig",
+                            "Dependency": "catDeps",
+                            "CVE": "catDeps",
+                            "AI Inference": "catAI",
+                            "AI Inference (NVIDIA Morpheus)": "catAI",
+                            "AI Inference (Phishing NLP)": "catAI",
+                            "AI Inference (Payload Analysis)": "catAI",
+                            "AI Inference (DGA Detection)": "catAI"
+                        };
+                        const catKey = catMapping[f.category] || f.category;
+
+                        return (
+                            <div key={i} className="bg-[#0d1117] border border-white/5 rounded-lg p-5 space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <span className={`text-xs font-bold px-2 py-1 rounded-lg uppercase ${severityColor(f.severity)}`}>
+                                            {t(sevKey) || f.severity}
+                                        </span>
+                                        <h4 className="font-semibold text-lg">{localized.title || f.title}</h4>
+                                    </div>
+                                    <span className="text-xs py-1 px-2 rounded bg-white/5 text-gray-400 border border-white/10 uppercase">
+                                        {t(catKey) || f.category}
                                     </span>
-                                    <h4 className="font-semibold text-lg">{f.title}</h4>
                                 </div>
-                                <span className="text-xs py-1 px-2 rounded bg-white/5 text-gray-400 border border-white/10 uppercase">{f.category}</span>
+                                <p className="text-sm text-gray-300 leading-relaxed">{localized.description || f.description}</p>
+                                <div className="bg-[#161b27] border border-blue-500/20 rounded-lg p-3 mt-2">
+                                    <p className="text-sm text-blue-300">
+                                        <strong className="text-blue-400">{t("recommendation")}: </strong>{localized.recommendation || f.recommendation}
+                                    </p>
+                                </div>
                             </div>
-                            <p className="text-sm text-gray-300 leading-relaxed">{f.description}</p>
-                            <div className="bg-[#161b27] border border-blue-500/20 rounded-lg p-3 mt-2">
-                                <p className="text-sm text-blue-300">
-                                    <strong className="text-blue-400">{t("recommendation")}: </strong>{f.recommendation}
-                                </p>
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             )}
         </div>

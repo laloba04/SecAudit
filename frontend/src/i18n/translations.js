@@ -47,6 +47,7 @@ export const translations = {
     pending: "PENDING",
 
     // Details Panel
+    viewDetails: "View Details",
     scanId: "Scan ID",
     report: "Report",
     visit: "Visit",
@@ -112,6 +113,9 @@ export const translations = {
     dbSize: "Database Size",
     purgeHistory: "Purge all histories",
     saveChanges: "Save Changes",
+    masterNode: "Master Node",
+    pythonScanner: "Python Scanner",
+    goApiServer: "Go API Server",
 
     // Infrastructure
     infrastructureDesc: "Manage SecAudit nodes and Docker Sandbox environments.",
@@ -208,6 +212,84 @@ export const translations = {
     valid: "Valid",
     warning: "Review",
     expired: "Issue",
+
+    // Severities
+    critical: "Critical",
+    high: "High",
+    medium: "Medium",
+    low: "Low",
+    info: "Info",
+
+    // Categories
+    catHeaders: "Headers",
+    catSSL: "SSL/TLS",
+    catConfig: "Configuration",
+    catDeps: "Dependencies",
+    catAI: "AI Inference",
+
+    // Vulnerability Catalog (Translations for Scanner Findings)
+    vulnCatalog: {
+      "HSTS Not Enabled": {
+        title: "HSTS Not Enabled",
+        description: "The Strict-Transport-Security header was not found. Connections are not forced to HTTPS.",
+        recommendation: "Enable HSTS. Add: Strict-Transport-Security: max-age=31536000; includeSubDomains",
+      },
+      "CSP Missing": {
+        title: "CSP Missing",
+        description: "Content-Security-Policy header is missing. Risk of XSS and injection attacks.",
+        recommendation: "Implement a strict CSP policy.",
+      },
+      "Clickjacking Protection Missing": {
+        title: "Clickjacking Protection Missing",
+        description: "X-Frame-Options is not set. The site could be embedded in an iframe for clickjacking.",
+        recommendation: "Set X-Frame-Options to DENY or SAMEORIGIN.",
+      },
+      "MIME Sniffing Protection Missing": {
+        title: "MIME Sniffing Protection Missing",
+        description: "X-Content-Type-Options is missing, allowing browser to sniff file types.",
+        recommendation: "Set X-Content-Type-Options to nosniff.",
+      },
+      "Referrer Policy Missing": {
+        title: "Referrer Policy Missing",
+        description: "Referrer-Policy header not found. Leakage of referral info.",
+        recommendation: "Set a clear Referrer-Policy.",
+      },
+      "XSS Protection Header Missing": {
+        title: "XSS Protection Header Missing",
+        description: "X-XSS-Protection header not found.",
+        recommendation: "Enable XSS protection or use a strong CSP.",
+      },
+      "Unencrypted Connection": {
+        title: "Unencrypted Connection",
+        description: "The site is using plain HTTP.",
+        recommendation: "Redirect all traffic to HTTPS.",
+      },
+      "SSL Certificate Expired": {
+        title: "SSL Certificate Expired",
+        description: "The certificate has expired.",
+        recommendation: "Renew the SSL certificate immediately.",
+      },
+      "Server Information Disclosure": {
+        title: "Server Information Disclosure",
+        description: "Server version or technology is exposed in headers.",
+        recommendation: "Disable server signature tokens.",
+      },
+      "Morpheus: Spear-Phishing Context Detection": {
+        title: "Morpheus: Spear-Phishing Context Detection",
+        description: "NVIDIA Triton applied BERT-based NLP analysis on the DOM. Found semantic similarity with phishing campaigns.",
+        recommendation: "Block domain at DNS level and reset MFA.",
+      },
+      "Morpheus: Zero-Day Polymorphic Sequence": {
+        title: "Morpheus: Zero-Day Polymorphic Sequence",
+        description: "cuDF sequence analysis detected obfuscated JS attempting to bypass WAF signatures.",
+        recommendation: "Isolate endpoint and export PCAP for deep analysis.",
+      },
+      "Morpheus: Algorithmic Domain Communication": {
+        title: "Morpheus: Algorithmic Domain Communication",
+        description: "Network graphs indicate background requests to a DGA pattern associated with Botnets.",
+        recommendation: "Deploy strict egress filtering rules.",
+      },
+    }
   },
   es: {
     // Header & Navegación
@@ -257,6 +339,7 @@ export const translations = {
     pending: "PENDIENTE",
 
     // Panel de Detalles
+    viewDetails: "Ver Detalles",
     scanId: "ID de Escaneo",
     report: "Reporte",
     visit: "Visitar",
@@ -324,6 +407,9 @@ export const translations = {
     dbSize: "Tamaño de la BD",
     purgeHistory: "Purgar todos los historiales",
     saveChanges: "Guardar Cambios",
+    masterNode: "Nodo Maestro",
+    pythonScanner: "Escáner Python",
+    goApiServer: "Servidor API Go",
 
     // Infrastructure
     infrastructureDesc: "Gestiona los nodos de SecAudit y los entornos Sandbox de Docker.",
@@ -420,6 +506,84 @@ export const translations = {
     valid: "Válido",
     warning: "Revisar",
     expired: "Problema",
+
+    // Severidades
+    critical: "Crítico",
+    high: "Alto",
+    medium: "Medio",
+    low: "Bajo",
+    info: "Info",
+
+    // Categorías
+    catHeaders: "Cabeceras",
+    catSSL: "SSL/TLS",
+    catConfig: "Configuración",
+    catDeps: "Dependencias",
+    catAI: "Inferencia IA",
+
+    // Catálogo de Vulnerabilidades (Traducciones para el motor de escaneo)
+    vulnCatalog: {
+      "HSTS Not Enabled": {
+        title: "HSTS no habilitado",
+        description: "No se encontró la cabecera Strict-Transport-Security. Las conexiones no se fuerzan a HTTPS.",
+        recommendation: "Habilita HSTS. Añade: Strict-Transport-Security: max-age=31536000; includeSubDomains",
+      },
+      "CSP Missing": {
+        title: "Falta CSP (Content-Security-Policy)",
+        description: "Falta la cabecera CSP. Riesgo de ataques XSS e inyección de datos.",
+        recommendation: "Implementa una política CSP estricta.",
+      },
+      "Clickjacking Protection Missing": {
+        title: "Sin protección contra Clickjacking",
+        description: "X-Frame-Options no está configurado. El sitio podría ser embebido en un iframe.",
+        recommendation: "Configura X-Frame-Options a DENY o SAMEORIGIN.",
+      },
+      "MIME Sniffing Protection Missing": {
+        title: "Falta protección de MIME Sniffing",
+        description: "Falta X-Content-Type-Options, lo que permite al navegador adivinar tipos de archivo.",
+        recommendation: "Configura X-Content-Type-Options a nosniff.",
+      },
+      "Referrer Policy Missing": {
+        title: "Falta Referrer Policy",
+        description: "No se encontró la cabecera Referrer-Policy. Filtrado de información de referencia.",
+        recommendation: "Configura una Referrer-Policy clara.",
+      },
+      "XSS Protection Header Missing": {
+        title: "Falta cabecera de protección XSS",
+        description: "No se encontró la cabecera X-XSS-Protection.",
+        recommendation: "Habilita la protección XSS o usa un CSP fuerte.",
+      },
+      "Unencrypted Connection": {
+        title: "Conexión no cifrada",
+        description: "El sitio está usando HTTP plano en lugar de HTTPS.",
+        recommendation: "Redirige todo el tráfico a HTTPS.",
+      },
+      "SSL Certificate Expired": {
+        title: "Certificado SSL Caducado",
+        description: "El certificado de seguridad ha expirado.",
+        recommendation: "Renueva el certificado SSL inmediatamente.",
+      },
+      "Server Information Disclosure": {
+        title: "Exposición de información del servidor",
+        description: "La versión o tecnología del servidor está expuesta en las cabeceras.",
+        recommendation: "Desactiva los tokens de firma del servidor.",
+      },
+      "Morpheus: Spear-Phishing Context Detection": {
+        title: "Morpheus: Detección de contexto Spear-Phishing",
+        description: "Análisis NLP basado en BERT sobre el DOM. Similitud semántica con campañas conocidas de robo de credenciales.",
+        recommendation: "Bloquea el dominio a nivel DNS y resetea el MFA de usuarios.",
+      },
+      "Morpheus: Zero-Day Polymorphic Sequence": {
+        title: "Morpheus: Secuencia Polimórfica Zero-Day",
+        description: "Análisis de secuencias cuDF detectó un payload JS ofuscado intentando evadir firmas WAF.",
+        recommendation: "Aisla el equipo. Exporta el PCAP para análisis profundo con modelos de Ransomware.",
+      },
+      "Morpheus: Algorithmic Domain Communication": {
+        title: "Morpheus: Comunicación de dominio algorítmico",
+        description: "Grafos de red indican peticiones en segundo plano a un patrón DGA asociado con Botnets.",
+        recommendation: "Despliega reglas estrictas de filtrado de salida.",
+      },
+    }
   },
   eu: {
     // Goiburua eta Nabigazioa
@@ -469,6 +633,7 @@ export const translations = {
     pending: "ZAIN",
 
     // Xehetasunen Panela
+    viewDetails: "Ikusi Xehetasunak",
     scanId: "Eskaneaketa IDa",
     report: "Txostena",
     visit: "Bisitatu",
@@ -535,6 +700,9 @@ export const translations = {
     dbSize: "DB Tamaina",
     purgeHistory: "Garbitu historial guztiak",
     saveChanges: "Gorde Aldaketak",
+    masterNode: "Nodo Maisua",
+    pythonScanner: "Python Eskaner",
+    goApiServer: "Go API Zerbitzaria",
 
     // Infrastructure
     infrastructureDesc: "Kudeatu SecAudit nodoak eta Docker Sandbox inguruneak.",
@@ -631,5 +799,83 @@ export const translations = {
     valid: "Baliozkoa",
     warning: "Berrikusi",
     expired: "Arazoa",
+
+    // Larritasuna
+    critical: "Kritikoa",
+    high: "Altua",
+    medium: "Ertaina",
+    low: "Baxua",
+    info: "Info",
+
+    // Kategoriak
+    catHeaders: "Goiburuak",
+    catSSL: "SSL/TLS",
+    catConfig: "Konfigurazioa",
+    catDeps: "Mendekotasunak",
+    catAI: "AI Inferentzia",
+
+    // Ahultasunen Katalogoa (Eskaner aurkikuntzen itzulpenak)
+    vulnCatalog: {
+      "HSTS Not Enabled": {
+        title: "HSTS ez dago gaituta",
+        description: "Ez da aurkitu Strict-Transport-Security goiburua. Konexioak ez dira HTTPSera behartzen.",
+        recommendation: "Gaitu HSTS. Gehitu: Strict-Transport-Security: max-age=31536000; includeSubDomains",
+      },
+      "CSP Missing": {
+        title: "CSP falta da",
+        description: "Content-Security-Policy goiburua falta da. XSS eta injekzio erasotzeko arriskua.",
+        recommendation: "Inplementatu CSP politika zorrotz bat.",
+      },
+      "Clickjacking Protection Missing": {
+        title: "Clickjacking-aren aurkako babesik ez",
+        description: "X-Frame-Options ez dago konfiguratuta. Webgunea iframe batean kapsulatu daiteke.",
+        recommendation: "Ezarri X-Frame-Options DENY edo SAMEORIGIN moduan.",
+      },
+      "MIME Sniffing Protection Missing": {
+        title: "MIME Sniffing babesa falta da",
+        description: "X-Content-Type-Options falta da, nabigatzaileak fitxategi motak igartzea ahalbidetuz.",
+        recommendation: "Ezarri X-Content-Type-Options nosniff gisa.",
+      },
+      "Referrer Policy Missing": {
+        title: "Referrer Policy falta da",
+        description: "Ez da aurkitu Referrer-Policy goiburua. Erreferentzia-informazioaren filtrazioa.",
+        recommendation: "Konfiguratu Referrer-Policy argi bat.",
+      },
+      "XSS Protection Header Missing": {
+        title: "XSS babes goiburua falta da",
+        description: "Ez da aurkitu X-XSS-Protection goiburua.",
+        recommendation: "Gaitu XSS babesa edo erabili CSP sendo bat.",
+      },
+      "Unencrypted Connection": {
+        title: "Zifratu gabeko konexioa",
+        description: "Webgunea HTTP arrunta erabiltzen ari da HTTPSren ordez.",
+        recommendation: "Birbideratu trafiko guztia HTTPSera.",
+      },
+      "SSL Certificate Expired": {
+        title: "SSL ziurtagiria iraungita",
+        description: "Segurtasun ziurtagiria iraungitu egin da.",
+        recommendation: "Berritu SSL ziurtagiria berehala.",
+      },
+      "Server Information Disclosure": {
+        title: "Zerbitzariaren informazioa agerian",
+        description: "Zerbitzariaren bertsioa edo teknologia goiburuetan agertzen da.",
+        recommendation: "Desgaitu zerbitzariaren sinadura tokenak.",
+      },
+      "Morpheus: Spear-Phishing Context Detection": {
+        title: "Morpheus: Spear-Phishing testuinguru detekzioa",
+        description: "DOMaren gaineko NLP analisi BERTean oinarritua. Kredentzial-lapurreta kanpainekin antzekotasun semantikoa.",
+        recommendation: "Blokeatu domeinua DNS mailan eta berrezarri erabiltzaileen MFA-a.",
+      },
+      "Morpheus: Zero-Day Polymorphic Sequence": {
+        title: "Morpheus: Zero-Day sekuentzia polimorfikoa",
+        description: "cuDF sekuentzia analisiak JS karga ofuskatu bat detektatu du WAF sinadurak saihestu nahian.",
+        recommendation: "Isolatu ekipoa. Esportatu PCAPa Ransomware ereduekin analisi sakona egiteko.",
+      },
+      "Morpheus: Algorithmic Domain Communication": {
+        title: "Morpheus: Domeinu komunikazio algoritmikoa",
+        description: "Sare-grafoek Botnet-ekin lotutako DGA patroietara egindako atzeko planoko eskaerak adierazten dituzte.",
+        recommendation: "Hedatu irteera-iragazki arau zorrotzak.",
+      },
+    }
   },
 };

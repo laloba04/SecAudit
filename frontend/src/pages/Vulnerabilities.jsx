@@ -42,7 +42,7 @@ export default function Vulnerabilities() {
                         </div>
                         <div>
                             <p className={`text-2xl font-bold ${color}`}>{loading ? "—" : counts[key]}</p>
-                            <p className="text-[10px] text-gray-500 uppercase tracking-wider">{key}</p>
+                            <p className="text-[10px] text-gray-500 uppercase tracking-wider">{t(key.toLowerCase()) || key}</p>
                         </div>
                     </div>
                 ))}
@@ -70,18 +70,35 @@ export default function Vulnerabilities() {
                             </tr>
                         </thead>
                         <tbody>
-                            {findings.map((f, i) => (
-                                <tr key={i} className="border-t border-white/5 hover:bg-white/[0.02]">
-                                    <td className="px-4 py-3 font-medium">{f.title}</td>
-                                    <td className="px-4 py-3 text-gray-400">{f.category}</td>
-                                    <td className="px-4 py-3">
-                                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${severityColor(f.severity)}`}>
-                                            {f.severity}
-                                        </span>
-                                    </td>
-                                    <td className="px-4 py-3 text-right font-mono text-cyan-400">{f.occurrences}×</td>
-                                </tr>
-                            ))}
+                            {findings.map((f, i) => {
+                                const catalog = t("vulnCatalog") || {};
+                                const localized = catalog[f.title] || {};
+
+                                // Mapping raw backend strings to translation keys
+                                const sevKey = (f.severity || "low").toLowerCase();
+                                const catMapping = {
+                                    "Headers": "catHeaders",
+                                    "SSL/TLS": "catSSL",
+                                    "Configuration": "catConfig",
+                                    "Dependency": "catDeps",
+                                    "CVE": "catDeps",
+                                    "AI Inference": "catAI"
+                                };
+                                const catKey = catMapping[f.category] || f.category;
+
+                                return (
+                                    <tr key={i} className="border-t border-white/5 hover:bg-white/[0.02]">
+                                        <td className="px-4 py-3 font-medium">{localized.title || f.title}</td>
+                                        <td className="px-4 py-3 text-gray-400">{t(catKey) || f.category}</td>
+                                        <td className="px-4 py-3">
+                                            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${severityColor(f.severity)}`}>
+                                                {t(sevKey) || f.severity}
+                                            </span>
+                                        </td>
+                                        <td className="px-4 py-3 text-right font-mono text-cyan-400">{f.occurrences}×</td>
+                                    </tr>
+                                );
+                            })}
                         </tbody>
                     </table>
                 </div>

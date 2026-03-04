@@ -6,7 +6,7 @@ import { scoreColor, severityColor, StatusBadge } from "../components/utils";
 import { Link } from "react-router-dom";
 
 export default function Dashboard() {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const [scans, setScans] = useState([]);
     const [urlInput, setUrlInput] = useState("");
     const [isScanning, setIsScanning] = useState(false);
@@ -68,7 +68,7 @@ export default function Dashboard() {
         .filter((s) => s.score != null && s.status === "completed")
         .slice(0, 10).reverse()
         .map((s) => ({
-            name: new Date(s.created_at).toLocaleDateString("es", { day: "2-digit", month: "2-digit" }),
+            name: new Date(s.created_at).toLocaleDateString(language, { day: "2-digit", month: "2-digit" }),
             score: s.score,
         }));
 

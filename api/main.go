@@ -318,7 +318,7 @@ func runScanner(scanID int64, url string, notifyEmail string) {
 func sendEmailAlert(recipient, targetURL string, score, findingsCount int) {
 	// ⚠️ Has elegido usar tu correo personal como Remitente. ¡Genial!
 	from := "mba.maria08@gmail.com"
-	password := "TU_CONTRASEÑA_DE_APLICACION_GMAIL" // Pon aquí TU CONTRASEÑA DE APLICACIÓN generada en Google
+	password := "ynns urzs vtka ohlm" // Pon aquí TU CONTRASEÑA DE APLICACIÓN generada en Google
 
 	to := []string{recipient}
 	smtpHost := "smtp.gmail.com"

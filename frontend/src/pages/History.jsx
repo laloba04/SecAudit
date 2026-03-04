@@ -88,7 +88,7 @@ export default function History() {
                                 </td>
                                 <td className="px-5 py-4">
                                     <Link to={`/scan/${scan.id}`} className="text-sm text-cyan-400 hover:text-cyan-300 transition-colors font-medium">
-                                        Ver Detalles →
+                                        {t("viewDetails") || "Ver Detalles"} →
                                     </Link>
                                 </td>
                             </tr>

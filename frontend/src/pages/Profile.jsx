@@ -132,7 +132,7 @@ export default function Profile() {
                         type="submit"
                         className="flex items-center gap-2 bg-cyan-500 hover:bg-cyan-400 text-black font-semibold px-5 py-2.5 rounded-lg text-sm transition-colors"
                     >
-                        {saved ? <><Check size={16} /> {t("saved") ?? "Guardado"}</> : <><Save size={16} /> {t("saveChanges") ?? "Guardar Cambios"}</>}
+                        {saved ? <><Check size={16} /> {t("savedOk") ?? "Guardado"}</> : <><Save size={16} /> {t("saveChanges") ?? "Guardar Cambios"}</>}
                     </button>
                 </form>
             </div>

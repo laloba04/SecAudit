@@ -80,7 +80,11 @@ export default function Infrastructure() {
                 {/* Services grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {services.map((svc) => {
-                        const info = SERVICE_INFO[svc.service] || { name: svc.service, desc: "Service", port: "—" };
+                        const infrastructureNodes = [
+                            { name: t("masterNode") || "Master Node", port: 5173, status: "open", color: "cyan" },
+                            { name: t("pythonScanner") || "Python Scanner", port: "Orchestrator", status: "open", color: "blue" },
+                            { name: t("goApiServer") || "Go API Server", port: 8080, status: "open", color: "green" },
+                        ]; const info = SERVICE_INFO[svc.service] || { name: svc.service, desc: "Service", port: "—" };
                         const isRunning = svc.status === "running";
                         const isLoading = actionLoading[svc.service];
 
@@ -111,8 +115,8 @@ export default function Infrastructure() {
                                         disabled={isLoading || !dockerAvailable}
                                         onClick={() => handleAction(svc.service, isRunning ? "stop" : "start")}
                                         className={`flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors disabled:opacity-50 ${isRunning
-                                                ? "text-red-400 hover:bg-red-400/10"
-                                                : "text-green-400 hover:bg-green-400/10"
+                                            ? "text-red-400 hover:bg-red-400/10"
+                                            : "text-green-400 hover:bg-green-400/10"
                                             }`}
                                     >
                                         {isLoading ? (
