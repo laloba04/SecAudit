@@ -14,6 +14,7 @@ Analiza cabeceras HTTP, certificados SSL/TLS y dependencias públicas para detec
 - 🔒 **Verificación SSL/TLS** — protocolos débiles, certificados caducados, cipher suites inseguros
 - ⚙️ **Detección de configuraciones inseguras** — métodos HTTP peligrosos, directory listing, info disclosure
 - 📦 **Auditoría de dependencias públicas** — scripts JS/CSS con CVEs conocidos via OSV.dev API
+- 🤖 **Inferencia de IA (NVIDIA Morpheus)** — detección de phishing, payloads zero-day y patrones DGA mediante NLP y grafos
 - 📊 **Reportes en PDF y HTML** — hallazgos, severidades, puntuación de seguridad y pasos de remediación
 - 🖥️ **Dashboard web** — historial de análisis, gráficas, comparativa entre auditorías
 - 🧪 **Modo sandbox** — Docker Compose con OWASP Juice Shop y DVWA para practicar localmente
@@ -25,6 +26,7 @@ Analiza cabeceras HTTP, certificados SSL/TLS y dependencias públicas para detec
 | Área | Tecnología | Rol |
 |---|---|---|
 | Scanner | Python 3.12 + httpx | Análisis de headers, SSL, deps, configuración |
+| Core IA  | NVIDIA Morpheus + RAPIDS | Detección predictiva de amenazas (Triton Inference) |
 | API REST | Go + Gin | Backend de alto rendimiento, auth JWT |
 | Base de datos | SQLite → PostgreSQL | Historial de scans y hallazgos |
 | Reportes | Python + WeasyPrint + Jinja2 | Generación de PDF y HTML |
@@ -52,7 +54,8 @@ secaudit/
 │   ├── headers_scanner.py         # Análisis de cabeceras HTTP
 │   ├── ssl_scanner.py             # Verificación SSL/TLS
 │   ├── config_checker.py          # Configuraciones inseguras
-│   ├── deps_auditor.py            # Dependencias con CVEs
+│   ├── deps_auditor.py            # Dependencias con CVEs (OSV.dev)
+│   ├── morpheus_analyzer.py       # Inferencia IA (NVIDIA Morpheus Mock)
 │   ├── scanner.py                 # Orquestador principal
 │   ├── report_generator.py        # Generación PDF + HTML
 │   ├── templates/
@@ -163,6 +166,7 @@ SecAudit realiza **únicamente análisis pasivo**:
 - [x] **Fase 3** — Reportes PDF + módulos config_checker y deps_auditor
 - [x] **Fase 4** — Dashboard React + comparativa de auditorías
 - [x] **Fase 5** — Tests, CI/CD, despliegue público y portafolio
+- [x] **Fase 6** — Inferencia de IA para ciberseguridad (NVIDIA Morpheus + RAPIDS)
 
 ---
 
