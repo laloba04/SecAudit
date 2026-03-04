@@ -14,6 +14,7 @@ from headers_scanner import analyze_headers
 from ssl_scanner import analyze_ssl
 from config_checker import check_config
 from deps_auditor import check_dependencies
+from morpheus_analyzer import submit_to_morpheus_pipeline
 
 
 def run_all_scans(url: str) -> dict:
@@ -31,8 +32,11 @@ def run_all_scans(url: str) -> dict:
     ssl_result = analyze_ssl(url)
     config_result = check_config(url)
     deps_result = check_dependencies(url)
+    
+    # Inferencia IA NVIDIA Morpheus Mock
+    morpheus_result = submit_to_morpheus_pipeline(url)
 
-    modules = [headers_result, ssl_result, config_result, deps_result]
+    modules = [headers_result, ssl_result, config_result, deps_result, morpheus_result]
     
     global_score = 0
     total_weight = 0
@@ -41,10 +45,11 @@ def run_all_scans(url: str) -> dict:
 
     # Ponderaciones
     weights = {
-        "headers": 0.3,
-        "ssl": 0.3,
+        "headers": 0.25,
+        "ssl": 0.25,
         "config": 0.2,
-        "deps": 0.2
+        "deps": 0.15,
+        "morpheus_ai": 0.15
     }
 
     modules_run_names = []
