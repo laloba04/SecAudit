@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -118,10 +119,11 @@ func TestGetScanDetailAfterCreate(t *testing.T) {
 
 	var created map[string]interface{}
 	json.Unmarshal(w1.Body.Bytes(), &created)
+	scanID := created["scanId"].(float64)
 
 	// Obtener el scan creado
 	w2 := httptest.NewRecorder()
-	req2, _ := http.NewRequest("GET", "/api/scans/1", nil)
+	req2, _ := http.NewRequest("GET", fmt.Sprintf("/api/scans/%d", int(scanID)), nil)
 	router.ServeHTTP(w2, req2)
 
 	if w2.Code != http.StatusOK {
