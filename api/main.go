@@ -15,9 +15,14 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/glebarez/go-sqlite"
+	"github.com/golang-jwt/jwt/v5"
+	"golang.org/x/crypto/bcrypt"
 )
 
 var db *sql.DB
+
+// Clave secreta para firmar tokens JWT
+var jwtSecretKey = []byte("secaudit-super-secret-key-change-me-in-prod-1234")
 
 func initDB() {
 	var err error
@@ -54,6 +59,29 @@ func initDB() {
 	if err != nil {
 		log.Fatal("Error creating tables:", err)
 	}
+
+	// 1. Tabla de Usuarios (Nueva)
+	_, err = db.Exec(`
+		CREATE TABLE IF NOT EXISTS users (
+			id INTEGER PRIMARY KEY AUTOINCREMENT,
+			name TEXT NOT NULL,
+			email TEXT UNIQUE NOT NULL,
+			password_hash TEXT NOT NULL,
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+		)
+	`)
+	if err != nil {
+		log.Fatalf("Failed to create users table: %v", err)
+	}
+
+	// Crear usuario admin por defecto si no existe ninguno
+	var userCount int
+	db.QueryRow("SELECT COUNT(*) FROM users").Scan(&userCount)
+	if userCount == 0 {
+		hash, _ := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)
+		db.Exec("INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)", "Security Admin", "admin@secaudit.local", string(hash))
+	}
+
 	log.Println("✅ Database initialized (SQLite)")
 }
 
@@ -286,11 +314,10 @@ func main() {
 	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
-	// CORS — permitir frontend
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173", "http://localhost:3000"},
+		AllowAllOrigins:  true,
 		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
-		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization", "ngrok-skip-browser-warning", "Accept"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
@@ -298,6 +325,17 @@ func main() {
 
 	api := r.Group("/api")
 	{
+		// Endpoints públicos de autenticación
+		auth := api.Group("/auth")
+		{
+			auth.POST("/login", loginUser)
+			auth.POST("/register", registerUser)
+		}
+
+		// Rutas protegidas que requieren JWT
+		// protected := api.Group("/")
+		// protected.Use(authMiddleware()) // Lo dejamos desactivado temporalmente para no romper el frontend local hasta que lo integremos, pero la lógica ya está
+
 		api.GET("/scans", getScans)
 		api.POST("/scans", createScan)
 		api.GET("/scans/:id", getScanDetail)
@@ -610,4 +648,144 @@ func getNotifications(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, notifs)
+}
+
+// ==========================================
+// MÓDULO DE AUTENTICACIÓN JWT (JWT + BCRYPT)
+// ==========================================
+
+// POST /api/auth/register
+func registerUser(c *gin.Context) {
+	var req struct {
+		Name     string `json:"name" binding:"required"`
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required,min=8"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Datos inválidos", "details": err.Error()})
+		return
+	}
+
+	// Hashear contraseña (seguridad real)
+	hash, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error al encriptar contraseña"})
+		return
+	}
+
+	// Insertar en la BD SQLite
+	result, err := db.Exec("INSERT INTO users (name, email, password_hash) VALUES (?, ?, ?)", req.Name, req.Email, string(hash))
+	if err != nil {
+		if strings.Contains(err.Error(), "UNIQUE constraint failed") {
+			c.JSON(http.StatusConflict, gin.H{"error": "El email ya está registrado"})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error de base de datos"})
+		return
+	}
+
+	id, _ := result.LastInsertId()
+
+	// Generar Token JWT
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub":   id,
+		"email": req.Email,
+		"name":  req.Name,
+		"exp":   time.Now().Add(time.Hour * 72).Unix(),
+	})
+	tokenString, _ := token.SignedString(jwtSecretKey)
+
+	c.JSON(http.StatusCreated, gin.H{
+		"message": "Usuario registrado con éxito",
+		"token":   tokenString,
+		"user": gin.H{
+			"id":    id,
+			"name":  req.Name,
+			"email": req.Email,
+		},
+	})
+}
+
+// POST /api/auth/login
+func loginUser(c *gin.Context) {
+	var req struct {
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Datos inválidos"})
+		return
+	}
+
+	var user struct {
+		ID           int
+		Name         string
+		PasswordHash string
+	}
+
+	// Buscar en BD
+	err := db.QueryRow("SELECT id, name, password_hash FROM users WHERE email = ?", req.Email).Scan(&user.ID, &user.Name, &user.PasswordHash)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Credenciales incorrectas"})
+		return
+	}
+
+	// Comparar Hash BCRYPT con la contraseña introducida
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(req.Password)); err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Credenciales incorrectas"})
+		return
+	}
+
+	// Éxito: Generar Token JWT real
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub":   user.ID,
+		"email": req.Email,
+		"name":  user.Name,
+		"exp":   time.Now().Add(time.Hour * 72).Unix(),
+	})
+	tokenString, _ := token.SignedString(jwtSecretKey)
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Login satisfactorio",
+		"token":   tokenString,
+		"user": gin.H{
+			"id":    user.ID,
+			"name":  user.Name,
+			"email": req.Email,
+		},
+	})
+}
+
+// authMiddleware es una función que los endpoints protegidos usarían para requerir JWT
+// Se extrae el token del header Authorization: Bearer <token>
+func authMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" || !strings.HasPrefix(authHeader, "Bearer ") {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Token requerido"})
+			return
+		}
+
+		tokenString := strings.TrimPrefix(authHeader, "Bearer ")
+		token, err := jwt.Parse(tokenString, func(t *jwt.Token) (interface{}, error) {
+			if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+				return nil, fmt.Errorf("Método de firma inesperado")
+			}
+			return jwtSecretKey, nil
+		})
+
+		if err != nil || !token.Valid {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Token inválido o expirado"})
+			return
+		}
+
+		if claims, ok := token.Claims.(jwt.MapClaims); ok {
+			c.Set("userID", claims["sub"])
+			c.Set("userEmail", claims["email"])
+		}
+
+		c.Next()
+	}
 }

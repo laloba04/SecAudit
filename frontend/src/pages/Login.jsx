@@ -17,24 +17,29 @@ export default function Login() {
         setLoading(true);
         setError("");
 
-        // Simular llamada a API para Login usando LocalStorage
-        setTimeout(() => {
-            const usersStr = localStorage.getItem("secaudit_users");
-            const users = usersStr ? JSON.parse(usersStr) : [];
+        try {
+            const res = await fetch("/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "1"
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            const data = await res.json();
 
-            // Check hardcoded admin or registered user
-            const registeredUser = users.find(u => u.email === email && u.password === password);
-            if ((email === "admin@secaudit.local" && password === "admin") || registeredUser) {
-                // Éxito
-                localStorage.setItem("token", "fake-jwt-token-123");
-                const userData = registeredUser || { name: "Security Admin", email: "admin@secaudit.local", password: "admin" };
-                localStorage.setItem("current_user", JSON.stringify(userData));
-                navigate("/");
+            if (!res.ok) {
+                setError(data.error || t("incorrectCredentials"));
             } else {
-                setError(t("incorrectCredentials"));
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("current_user", JSON.stringify(data.user));
+                navigate("/");
             }
+        } catch (err) {
+            setError("Error de conexión con el servidor");
+        } finally {
             setLoading(false);
-        }, 800);
+        }
     };
 
     return (

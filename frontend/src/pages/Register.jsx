@@ -11,25 +11,36 @@ export default function Register() {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState("");
 
     const handleRegister = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setError("");
 
-        // Simular carga de registro y persistencia local para validarlo en Login
-        setTimeout(() => {
-            const usersStr = localStorage.getItem("secaudit_users");
-            const users = usersStr ? JSON.parse(usersStr) : [];
-            const newUser = { name, email, password };
-            users.push(newUser);
-            localStorage.setItem("secaudit_users", JSON.stringify(users));
+        try {
+            const res = await fetch("/api/auth/register", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "ngrok-skip-browser-warning": "1"
+                },
+                body: JSON.stringify({ name, email, password }),
+            });
+            const data = await res.json();
 
-            localStorage.setItem("token", "fake-jwt-token-registered");
-            // Set as current fake user (for testing)
-            localStorage.setItem("current_user", JSON.stringify(newUser));
-            navigate("/login");
+            if (!res.ok) {
+                setError(data.error || t("signupFailed") || "Failed to register");
+            } else {
+                localStorage.setItem("token", data.token);
+                localStorage.setItem("current_user", JSON.stringify(data.user));
+                navigate("/");
+            }
+        } catch (err) {
+            setError(t("connError") || "Connection Error");
+        } finally {
             setLoading(false);
-        }, 800);
+        }
     };
 
     return (
@@ -43,6 +54,8 @@ export default function Register() {
 
                 <h2 className="text-2xl font-bold text-center mb-2">{t("createAccount")}</h2>
                 <p className="text-sm text-gray-400 text-center mb-8">{t("joinSecAudit")}</p>
+
+                {error && <div className="bg-red-500/10 border border-red-500/20 text-red-400 text-sm px-4 py-3 rounded-lg mb-6">{error}</div>}
 
                 <form onSubmit={handleRegister} className="space-y-4">
                     <div>
