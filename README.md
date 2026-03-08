@@ -7,9 +7,7 @@ Analiza cabeceras HTTP, certificados SSL/TLS y dependencias públicas para detec
 > Construido con **Python + Go + React** — el mismo stack que usan herramientas profesionales de seguridad como Nuclei o httpx-toolkit.
 
 <p align="center">
-  <video src="https://github.com/laloba04/SecAudit/releases/download/v1.0-demo/demo.webm" controls width="100%">
-    <a href="https://github.com/laloba04/SecAudit/releases/download/v1.0-demo/demo.webm">▶️ Ver demo completo (video)</a>
-  </video>
+  <img src="demo.gif" alt="SecAudit Demo" width="100%">
 </p>
 
 ---
