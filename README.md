@@ -6,6 +6,12 @@ Analiza cabeceras HTTP, certificados SSL/TLS y dependencias públicas para detec
 
 > Construido con **Python + Go + React** — el mismo stack que usan herramientas profesionales de seguridad como Nuclei o httpx-toolkit.
 
+<p align="center">
+  <video src="demo.webm" controls width="100%" poster="demo.webp">
+    <a href="demo.webm">▶️ Ver demo completo (video)</a>
+  </video>
+</p>
+
 ---
 
 ## ✨ Funcionalidades
